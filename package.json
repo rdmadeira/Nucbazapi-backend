@@ -1,0 +1,20 @@
+{
+  "name": "nucba-zapi-backend",
+  "version": "1.0.0",
+  "description": "## Proyecto de Curso On Demand - Nucba",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rdmadeira/Nucbazapi-backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rdmadeira/Nucbazapi-backend/issues"
+  },
+  "homepage": "https://github.com/rdmadeira/Nucbazapi-backend#readme"
+}
