@@ -2,10 +2,6 @@
 
 ## Proyecto de Curso On Demand - Nucba
 
-## Images de pexels - https://www.pexels.com/pt-br/
-
-## Styled Components - Componentes de UI y UX fueron creados a mano. Pero hay Frameworks de UI para styled components - Chakra-UI, Bootstrap React, y otros.
-
 ## Aprovechar el Frontend SPA del modulo de React y crear un backend para este producto, con mongoDB, mongoose, expressJS, nodeJS, typescript
 
 Dejamos de lado la arquitetura de 3 capas (3-layer) que venia siendo el modelo de uso para el backend con node y express, y vamos adoptar una arquitectura hexagonal. Los 3 layers están detallados abajo:
