@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Users
+model User {
+  id          Int           @id @default(autoincrement())
+  email       String        @unique
+  name        String
+  password    String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  UserAddress UserAddress[]
+  Orders      Orders[]
+}
+
+model UserAddress {
+  id      Int    @id @default(autoincrement())
+  street  String
+  number  String
+  zipCode String
+  city    String
+  user    User   @relation(fields: [userId], references: [id])
+  userId  Int
+}
+
+// Category
+model Category {
+  id        Int        @id @default(autoincrement())
+  category  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Products  Products[]
+}
+
+// Products
+model Products {
+  id         Int          @id @default(autoincrement())
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  price      Float
+  imgUrl     String
+  category   Category     @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  OrderItems OrderItems[]
+}
+
+// Orders
+model Status {
+  id     Int      @id @default(autoincrement())
+  state  String // pendiente, en proceso, finalizado...
+  Orders Orders[]
+}
+
+model Orders {
+  id             Int          @id @default(autoincrement())
+  user           User         @relation(fields: [userId], references: [id])
+  status         Status       @relation(fields: [statusId], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  paymentId      String // Datos de Mercado libre
+  merchanOrderId String // Datos de Mercado libre
+  userId         Int
+  statusId       Int
+  OrderItems     OrderItems[]
+}
+
+model OrderItems {
+  id         Int      @id @default(autoincrement())
+  quantity   Int
+  unityPrice Float // El precio desacoplamos y desrelacionamos al precio del producto, porque al actualizar los precios, no afecte el precio del orden en el momento del pedido. 
+  product    Products @relation(fields: [productsId], references: [id])
+  order      Orders   @relation(fields: [ordersId], references: [id])
+  ordersId   Int
+  productsId Int
+}
