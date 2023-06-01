@@ -4,7 +4,9 @@ import prisma from '../config/db.js';
 
 export default class CategoryDataSource implements CategoryRepository {
   public async createCategory(categoryName: string): Promise<Category> {
-    const category = await prisma.category.create({ category: categoryName });
+    const category = await prisma.category.create({
+      data: { category: categoryName },
+    });
     return category;
   }
 }
