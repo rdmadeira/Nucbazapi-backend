@@ -1,5 +1,5 @@
-import { Category } from '../entities/category';
-import CategoryRepository from '../repositories/category.repository';
+import { Category } from '../entities/category.js';
+import CategoryRepository from '../repositories/category.repository.js';
 
 export const createCategoryInteractor =
   (categoryRepository: CategoryRepository) =>
