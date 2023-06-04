@@ -8,7 +8,7 @@ interface CustomNodeJsGlobal extends Global {
 // Evitase multiplas instancias de Client de Prisma, toma la interface como instancia
 declare const global: CustomNodeJsGlobal;
 
-const prisma = new PrismaClient(); //hacer en el cli npx prisma generate
+const prisma = global.prisma || new PrismaClient(); //hacer en el cli npx prisma generate
 
 if (process.env.NODE_ENV === 'development') {
   global.prisma = prisma;
