@@ -1,5 +1,5 @@
-import { AuthLogin, AuthResponse, AuthSignIn } from '../entities/auth.js';
-import AuthRepository from '../repositories/Auth.repository.js';
+import { AuthLogin, AuthResponse, AuthSignIn } from '../entities/Auth.js';
+import AuthRepository from '../repositories/auth.repository.js';
 
 export const authLoginInteractor =
   (authRepository: AuthRepository) =>

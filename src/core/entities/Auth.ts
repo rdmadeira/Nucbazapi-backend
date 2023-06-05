@@ -6,15 +6,15 @@ export interface AuthLogin {
 }
 
 export interface AuthSignIn {
-  userId: number;
   name: string;
   email: string;
   password: string;
-  token: string;
-  expiresIn: number;
 }
 
 export interface AuthResponse {
+  userId: number;
   name: string;
   email: string;
+  token: string;
+  expiresIn: number;
 }

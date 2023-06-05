@@ -22,4 +22,17 @@ La idea es centrada en las entidades, y todo al rededor gira con base en esto:
 
 ![1685202910251](https://res.cloudinary.com/practicaldev/image/fetch/s--8CyULLwt--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://dev-to-uploads.s3.amazonaws.com/uploads/articles/cyfsq68u1mhy76ir9oq3.png)
 
-Por no estar muy acoplado, si cambias algo adentro del negocio, no hay que cambiar toda la estructura, solamente lo que afecta directamente.
+Por no estar muy acoplado, si cambias algo adentro del negocio, no hay que cambiar toda la estructura, solamente lo que afecta directamente
+
+## Dependencias instaladas:
+
+- express y @types/express;
+- typescript y @types/node;
+- JsonWebTokens y @types/jsonwebtokens - token generator con validad temporal
+- prisma y @prisma/client - ORM para SQL databases
+- bcryptJs y types/bcryptjs - hash de passwords
+- dotenv y @types/dotenv;
+- ts-node;
+- cors y @types/cors;
+- express-validator; - manejo de errores
+- nodemon

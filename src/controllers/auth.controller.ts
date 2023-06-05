@@ -1,13 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
-import { AuthResponse } from '../core/entities/auth.js';
+/* import { AuthResponse } from '../core/entities/Auth.js'; */
 import interactors from '../core/interactors/index.js';
 
-export const loginController = (
+export const loginController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const { email, password } = req.body;
+  const loginResponse = await interactors.LoginAuthInteractor({
+    email,
+    password,
+  });
+  if (!loginResponse) {
+    return res.status(404).json({ message: 'wrong credentials!' });
+  }
+
+  res.status(200).json({ message: 'Successful Login!', ...loginResponse });
 };
 
 export const signinController = async (
@@ -21,5 +30,8 @@ export const signinController = async (
     email,
     password,
   });
-  res.json({ ...signInResponse, message: 'success' });
+  if (!signInResponse) {
+    res.status(404).json({ message: 'wrong credentials!' });
+  }
+  res.status(200).json({ ...signInResponse, message: 'Successful Signed In!' });
 };
