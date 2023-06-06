@@ -11,7 +11,12 @@ router.post(
   '/signin',
   body('name').trim().notEmpty().withMessage('Nombre obligatório'),
   body('email').isEmail().withMessage('Ingrese un email válido'),
-  body('password').trim().notEmpty().withMessage('Contraseña obligatória'),
+  body('password')
+    .trim()
+    .notEmpty()
+    .withMessage('Contraseña obligatória')
+    .isLength({ min: 6 })
+    .withMessage('Mínimo 6 caracteres'),
   signinController
 );
 router.post(

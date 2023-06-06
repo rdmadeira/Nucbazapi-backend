@@ -22,6 +22,7 @@ server.get('/', (req: Request, res: Response) => {
 server.use('/api/v1/', routes);
 
 // handle errors:
+// These error-handling middleware functions are attached to the app instance after the route handler functions have been defined.
 server.use(errorHandler);
 
 server.listen(port, () =>

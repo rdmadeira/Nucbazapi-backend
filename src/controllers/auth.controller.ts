@@ -11,16 +11,19 @@ export const loginController = async (
 ) => {
   const errors = validationResult(req);
 
-  if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array()));
+  /* When an error occurs, we call the next(error) function and pass the error object as input. 
+  The Express framework will process this by skipping all the functions in the middleware function 
+  stack and triggering the functions in the error handling middleware function stack: */
+  if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array())); // next function with error skips all the normal no-error middleware
 
   const { email, password } = req.body;
   const loginResponse = await interactors.LoginAuthInteractor({
     email,
     password,
   });
-  if (!loginResponse) {
+  /* if (!loginResponse) {
     return res.status(404).json({ message: 'wrong credentials!' });
-  }
+  } // Error handle inside each controller function is not Clean! Better using middlewares to handle that.*/
 
   res.status(200).json({ message: 'Successful Login!', ...loginResponse });
 };
@@ -31,9 +34,12 @@ export const signinController = async (
   next: NextFunction
 ) => {
   const errors = validationResult(req);
-  console.log('errors', errors);
+  /* console.log('errors', errors); */
 
-  if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array()));
+  /* When an error occurs, we call the next(error) function and pass the error object as input. 
+  The Express framework will process this by skipping all the functions in the middleware function 
+  stack and triggering the functions in the error handling middleware function stack: */
+  if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array())); // next function with error skips all the normal no-error middleware
 
   const { email, password, name } = req.body;
   const signInResponse = await interactors.SigninAuthInteractor({
@@ -41,8 +47,8 @@ export const signinController = async (
     email,
     password,
   });
-  if (!signInResponse) {
+  /* if (!signInResponse) {
     res.status(404).json({ message: 'wrong credentials!' });
-  }
+  } // Error handle inside each controller function is not Clean! Better using middlewares to handle that.*/
   res.status(200).json({ ...signInResponse, message: 'Successful Signed In!' });
 };
