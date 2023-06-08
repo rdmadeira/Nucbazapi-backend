@@ -11,3 +11,6 @@ export const createCategory = async (
 
   res.json(category);
 };
+
+// leer categoria:
+// export const getController = async ()...

@@ -1,4 +1,4 @@
-import { AuthLogin, AuthSignIn, AuthResponse } from '../core/entities/Auth.js';
+import { AuthLogin, AuthSignIn, AuthResponseDto } from '../core/dto/Auth.js';
 import AuthRepository from '../core/repositories/auth.repository.js';
 import { User } from '@prisma/client'; // es nuestro type de user definido en prisma
 
@@ -9,7 +9,7 @@ import prisma from '../config/db.js';
 import crypto from 'crypto'; // modulo interno de node
 
 export default class AuthDataSource implements AuthRepository {
-  public async login(loginData: AuthLogin): Promise<AuthResponse | null> {
+  public async login(loginData: AuthLogin): Promise<AuthResponseDto | null> {
     const user = await prisma.user.findUnique({
       where: { email: loginData.email },
     });
@@ -33,7 +33,7 @@ export default class AuthDataSource implements AuthRepository {
     };
   }
 
-  public async signIn(signInData: AuthSignIn): Promise<AuthResponse | null> {
+  public async signIn(signInData: AuthSignIn): Promise<AuthResponseDto | null> {
     const existsUser = await prisma.user.findUnique({
       where: { email: signInData.email },
     });

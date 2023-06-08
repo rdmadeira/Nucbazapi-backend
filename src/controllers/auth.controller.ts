@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
 /* import { AuthResponse } from '../core/entities/Auth.js'; */
 import interactors from '../core/interactors/index.js';
+import { NotFoundError } from '../errors/not_found_error.js';
 import { RequestValidatorError } from '../errors/request_validation_error.js';
 
 export const loginController = async (
@@ -21,9 +22,9 @@ export const loginController = async (
     email,
     password,
   });
-  /* if (!loginResponse) {
-    return res.status(404).json({ message: 'wrong credentials!' });
-  } // Error handle inside each controller function is not Clean! Better using middlewares to handle that.*/
+  if (!loginResponse) {
+    return next(new NotFoundError());
+  } // Error handle inside each controller function is not Clean! Better using middlewares to handle that.
 
   res.status(200).json({ message: 'Successful Login!', ...loginResponse });
 };
