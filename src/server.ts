@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import routes from './routes/index.js';
 import { errorHandler } from './middlewares/errors_handlers.js';
+import { invalidPathHandle } from './middlewares/invalidpath.js';
 
 dotenv.config();
 
@@ -13,9 +14,10 @@ server.use(express.json());
 server.use(cors());
 
 server.get('/', (req: Request, res: Response) => {
-  res.send(
-    'Hola estas en el server por Typescript. Para usar la api, ingresá la siguiente ruta: /api/v1/<entidad>'
-  );
+  res.status(200).json({
+    message:
+      'Para entrar en la api: Especificá una ruta completa con una entidad, formato de ruta /api/v1/<entidad>',
+  });
 });
 
 // Routes:
@@ -24,6 +26,7 @@ server.use('/api/v1/', routes);
 // handle errors:
 // These error-handling middleware functions are attached to the app instance after the route handler functions have been defined.
 server.use(errorHandler);
+server.use(invalidPathHandle);
 
 server.listen(port, () =>
   console.log(`Server initializated on port ${port}...`)

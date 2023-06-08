@@ -9,7 +9,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  // Si es instancia de Custom Error, creado por nosotros:
+  // Si es instancia de Custom Error, este creado por nosotros:
   if (err instanceof CustomError) {
     return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
