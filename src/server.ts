@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import routes from './routes/index.js';
 import { errorHandler } from './middlewares/errors_handlers.js';
+import { invalidPathHandle } from './middlewares/invalidpath.js';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ server.use('/api/v1/', routes);
 // handle errors:
 // These error-handling middleware functions are attached to the app instance after the route handler functions have been defined.
 server.use(errorHandler);
+server.use(invalidPathHandle);
 
 server.listen(port, () =>
   console.log(`Server initializated on port ${port}...`)

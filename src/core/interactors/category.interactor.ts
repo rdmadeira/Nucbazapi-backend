@@ -7,3 +7,9 @@ export const createCategoryInteractor =
     const newCategory = await categoryRepository.createCategory(categoryName);
     return newCategory;
   };
+
+export const getCategoriesInteractor =
+  (categoryRepository: CategoryRepository) => async (): Promise<Category[]> => {
+    const newCategories = await categoryRepository.getCategories();
+    return newCategories;
+  };

@@ -77,8 +77,8 @@ model OrderItems {
   id         Int      @id @default(autoincrement())
   quantity   Int
   unityPrice Float // El precio desacoplamos y desrelacionamos al precio del producto, porque al actualizar los precios, no afecte el precio del orden en el momento del pedido. 
-  product    Products @relation(fields: [productsId], references: [id])
-  order      Orders   @relation(fields: [ordersId], references: [id])
-  ordersId   Int
-  productsId Int
+  product    Products @relation(fields: [productId], references: [id])
+  order      Orders   @relation(fields: [orderId], references: [id])
+  orderId    Int
+  productId  Int
 }
