@@ -1,4 +1,7 @@
-import { createCategoryInteractor } from './category.interactor.js';
+import {
+  createCategoryInteractor,
+  getCategoriesInteractor,
+} from './category.interactor.js';
 import {
   authLoginInteractor,
   authSigninInteractor,
@@ -11,12 +14,14 @@ import AuthDataSource from '../../data_sources/auth.datasource.js';
 const categoryRepository = new CategoryDataSource();
 const authRepository = new AuthDataSource();
 
-const CategoryInteractor = createCategoryInteractor(categoryRepository);
+const CreateCategoryInteractor = createCategoryInteractor(categoryRepository);
+const GetCategoryInteractor = getCategoriesInteractor(categoryRepository);
 const LoginAuthInteractor = authLoginInteractor(authRepository);
 const SigninAuthInteractor = authSigninInteractor(authRepository);
 
 const interactors = {
-  CategoryInteractor,
+  CreateCategoryInteractor,
+  GetCategoryInteractor,
   LoginAuthInteractor,
   SigninAuthInteractor,
 };

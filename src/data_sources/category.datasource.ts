@@ -9,4 +9,9 @@ export default class CategoryDataSource implements CategoryRepository {
     });
     return category;
   }
+  public async getCategories(): Promise<Category[]> {
+    const categories = await prisma.category.findMany();
+
+    return categories;
+  }
 }
