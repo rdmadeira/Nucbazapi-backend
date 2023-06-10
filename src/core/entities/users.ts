@@ -9,7 +9,7 @@ export interface User {
   password: string;
   createdAt: Date;
   updatedAt: Date;
-  role: number;
+  roleId: number;
 }
 
 export interface UserAddress {

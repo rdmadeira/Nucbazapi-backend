@@ -41,5 +41,8 @@
     "nodemon": "^2.0.22",
     "prettier-plugin-prisma": "^4.13.0",
     "prisma": "^4.15.0"
+  },
+  "prisma": {
+    "seed": "ts-node --esm ./prisma/seed.ts"
   }
 }

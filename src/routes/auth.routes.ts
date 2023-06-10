@@ -8,7 +8,7 @@ import { body } from 'express-validator';
 const router = Router();
 
 router.post(
-  '/signin',
+  '/signup',
   body('name').trim().notEmpty().withMessage('Nombre obligatório'),
   body('email').isEmail().withMessage('Ingrese un email válido'),
   body('password')

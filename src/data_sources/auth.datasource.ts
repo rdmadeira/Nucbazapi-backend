@@ -7,11 +7,15 @@ import bcrypt from 'bcryptjs'; // hace el hash (encrypta) de un password
 
 import prisma from '../config/db.js';
 import crypto from 'crypto'; // modulo interno de node
+import { resolve } from 'path';
 
 export default class AuthDataSource implements AuthRepository {
   public async login(loginData: AuthLogin): Promise<AuthResponseDto | null> {
     const user = await prisma.user.findUnique({
       where: { email: loginData.email },
+      include: {
+        role: true,
+      },
     });
 
     if (!user) return null;
@@ -30,12 +34,19 @@ export default class AuthDataSource implements AuthRepository {
       email: user.email,
       token,
       expiresIn: 60 * 60 * 1000,
+      role: {
+        roleId: user.role.id,
+        roleName: user.role.role,
+      },
     };
   }
 
   public async signIn(signInData: AuthSignIn): Promise<AuthResponseDto | null> {
     const existsUser = await prisma.user.findUnique({
       where: { email: signInData.email },
+      include: {
+        role: true,
+      },
     });
     // Check user no exist en la base de datos:
     if (existsUser) {
@@ -52,7 +63,9 @@ export default class AuthDataSource implements AuthRepository {
         name: signInData.name,
         email: signInData.email,
         password: hashpassword,
+        roleId: signInData.roleId,
       },
+      // Hay que crear (popular) primero la tabla Role de la base de datos, si no, va a saltar error del tipo: /* Foreign key constraint failed on the field: `(not available)` - error de prisma. Eso se debe a que no existe todavía rows en la tabla Role, y user depende de roleId. Hay que crear un seed de prisma para grabar en la db, tabla Role */
     });
 
     // Crear token:
@@ -64,6 +77,10 @@ export default class AuthDataSource implements AuthRepository {
       userId: user.id,
       token,
       expiresIn: 60 * 60 * 1000, // 1 hora se definió en process.env.jwt_expire
+      role: {
+        roleId: user.roleId,
+        roleName: existsUser.role.roleName,
+      },
     };
   }
 

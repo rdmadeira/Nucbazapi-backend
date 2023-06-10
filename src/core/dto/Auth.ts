@@ -5,10 +5,16 @@ export interface AuthLogin {
   password: string;
 }
 
+export interface RoleDto {
+  roleName: string;
+  roleId: number;
+}
+
 export interface AuthSignIn {
   name: string;
   email: string;
   password: string;
+  roleId: number;
 }
 
 // En general, no se devuelve una entidad, cuando hay datos sensibles, como en un usuario. El DTO se encarga de no devolver todo.
@@ -19,4 +25,5 @@ export interface AuthResponseDto {
   email: string;
   token: string;
   expiresIn: number;
+  role: RoleDto;
 }

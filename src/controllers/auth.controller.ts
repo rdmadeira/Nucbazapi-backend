@@ -42,14 +42,17 @@ export const signinController = async (
   stack and triggering the functions in the error handling middleware function stack: */
   if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array())); // next function with error skips all the normal no-error middleware
 
-  const { email, password, name } = req.body;
+  const { email, password, name, roleId } = req.body;
   const signInResponse = await interactors.SigninAuthInteractor({
     name,
     email,
     password,
+    roleId,
   });
   /* if (!signInResponse) {
     res.status(404).json({ message: 'wrong credentials!' });
   } // Error handle inside each controller function is not Clean! Better using middlewares to handle that.*/
-  res.status(200).json({ ...signInResponse, message: 'Successful Signed In!' });
+  res
+    .status(200)
+    .json({ ...signInResponse, message: 'Successful Signued Up!' });
 };
