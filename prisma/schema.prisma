@@ -11,6 +11,19 @@ datasource db {
 }
 
 // Users
+// enum en prisma está bueno para usar como role de usuario (admin y user). Pero decidimos
+// usar una tabla Role a parte, porque la documentación de prisma atenta que la base de datos 
+// tiene que suportar eenum, por ejemplo mySQL no suporta, y si queremos cambiar la base de datos,
+// no es interesante tener algo que no es suportado por otras implementaciones.
+
+model Role {
+  id   Int    @id @default(autoincrement())
+  role String @unique
+  User User[] // Relacion one to many con 1 sole para muchos usuarios
+}
+
+// Cada cambio en la base de datos, se tiene que hacer un nuevo migrate de prisma
+
 model User {
   id          Int           @id @default(autoincrement())
   email       String        @unique
@@ -20,6 +33,8 @@ model User {
   updatedAt   DateTime      @updatedAt
   UserAddress UserAddress[]
   Orders      Orders[]
+  role        Role          @relation(fields: [roleId], references: [id])
+  roleId      Int
 }
 
 model UserAddress {
