@@ -1,17 +1,17 @@
 import { CustomError } from './custom_errors.js';
 
-export class NotFoundError extends CustomError {
-  statusCode = 404;
+export class NotAuthorized extends CustomError {
+  statusCode: number = 401; // code de no autorizado
 
   constructor() {
-    super('Route Not Found!');
+    super('Not Authorized');
     Object.setPrototypeOf(this, new.target.prototype);
   }
 
   serializeErrors(): { message: string; field?: string | undefined }[] {
     return [
       {
-        message: 'Not Found!',
+        message: 'Not authorized!',
       },
     ];
   }

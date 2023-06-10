@@ -2,6 +2,12 @@
 para que se después se cambia a otra ORM o ODM como mongoDB y mongoose, nuestras interfaces 
 siguen estando. 
 Prisma provee import {User, UserAddress} from '@prisma/client', pero no lo usamos por tal motivo */
+
+export interface Role {
+  id: number;
+  role: string;
+}
+
 export interface User {
   id: number;
   email: string;
@@ -10,6 +16,7 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
   roleId: number;
+  role: Role;
 }
 
 export interface UserAddress {

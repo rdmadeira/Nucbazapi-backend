@@ -1,4 +1,4 @@
-import { AuthLogin, AuthSignIn, AuthResponseDto } from '../core/dto/Auth.js';
+import { AuthLogin, AuthSignIn, AuthDto } from '../core/dto/authUser.js';
 import AuthRepository from '../core/repositories/auth.repository.js';
 import { User } from '@prisma/client'; // es nuestro type de user definido en prisma
 
@@ -10,7 +10,7 @@ import crypto from 'crypto'; // modulo interno de node
 import { resolve } from 'path';
 
 export default class AuthDataSource implements AuthRepository {
-  public async login(loginData: AuthLogin): Promise<AuthResponseDto | null> {
+  public async login(loginData: AuthLogin): Promise<AuthDto | null> {
     const user = await prisma.user.findUnique({
       where: { email: loginData.email },
       include: {
@@ -41,12 +41,9 @@ export default class AuthDataSource implements AuthRepository {
     };
   }
 
-  public async signIn(signInData: AuthSignIn): Promise<AuthResponseDto | null> {
+  public async signUp(signInData: AuthSignIn): Promise<AuthDto | null> {
     const existsUser = await prisma.user.findUnique({
       where: { email: signInData.email },
-      include: {
-        role: true,
-      },
     });
     // Check user no exist en la base de datos:
     if (existsUser) {
@@ -65,6 +62,9 @@ export default class AuthDataSource implements AuthRepository {
         password: hashpassword,
         roleId: signInData.roleId,
       },
+      include: {
+        role: true,
+      },
       // Hay que crear (popular) primero la tabla Role de la base de datos, si no, va a saltar error del tipo: /* Foreign key constraint failed on the field: `(not available)` - error de prisma. Eso se debe a que no existe todavía rows en la tabla Role, y user depende de roleId. Hay que crear un seed de prisma para grabar en la db, tabla Role */
     });
 
@@ -79,7 +79,7 @@ export default class AuthDataSource implements AuthRepository {
       expiresIn: 60 * 60 * 1000, // 1 hora se definió en process.env.jwt_expire
       role: {
         roleId: user.roleId,
-        roleName: existsUser.role.roleName,
+        roleName: user.role.role,
       },
     };
   }

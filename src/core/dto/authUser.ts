@@ -19,11 +19,18 @@ export interface AuthSignIn {
 
 // En general, no se devuelve una entidad, cuando hay datos sensibles, como en un usuario. El DTO se encarga de no devolver todo.
 // Las entidades sí son representaciones fieles de la base de datos. Por eso, pusimos auth en una carpeta a parte DTO, para organizar.
-export interface AuthResponseDto {
+export interface AuthDto {
   userId: number;
   name: string;
   email: string;
   token: string;
   expiresIn: number;
+  role: RoleDto;
+}
+
+export interface UserDto {
+  userId: number;
+  name: string;
+  email: string;
   role: RoleDto;
 }

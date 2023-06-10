@@ -1,6 +1,6 @@
-import { AuthLogin, AuthSignIn, AuthResponseDto } from '../dto/Auth.js';
+import { AuthLogin, AuthSignIn, AuthDto } from '../dto/authUser.js';
 
 export default interface AuthRepository {
-  login(login: AuthLogin): Promise<AuthResponseDto | null>;
-  signIn(signIn: AuthSignIn): Promise<AuthResponseDto | null>;
+  login(login: AuthLogin): Promise<AuthDto | null>;
+  signUp(signIn: AuthSignIn): Promise<AuthDto | null>;
 }
