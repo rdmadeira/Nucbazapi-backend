@@ -18,6 +18,7 @@ const categoryRepository = new CategoryDataSource();
 const authRepository = new AuthDataSource();
 const userRepository = new UserDatasource();
 
+//Interactors:
 const CreateCategoryInteractor = createCategoryInteractor(categoryRepository);
 const GetCategoryInteractor = getCategoriesInteractor(categoryRepository);
 const LoginAuthInteractor = authLoginInteractor(authRepository);
