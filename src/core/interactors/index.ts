@@ -10,7 +10,7 @@ import { getUserByIdInteractor } from './user.interactor.js';
 
 import CategoryDataSource from '../../data_sources/category.datasource.js';
 import AuthDataSource from '../../data_sources/auth.datasource.js';
-import UserDatasource from 'src/data_sources/user.datasource.js';
+import UserDatasource from '../../data_sources/user.datasource.js';
 
 //Crea el category repository:
 // Repositories:

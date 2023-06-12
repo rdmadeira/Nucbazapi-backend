@@ -4,6 +4,7 @@ import { validationResult } from 'express-validator';
 import interactors from '../core/interactors/index.js';
 import { NotFoundError } from '../errors/not_found_error.js';
 import { RequestValidatorError } from '../errors/request_validation_error.js';
+import { UserExistsError } from '../errors/user_exists.js';
 
 export const loginController = async (
   req: Request,
@@ -49,9 +50,9 @@ export const signinController = async (
     password,
     roleId,
   });
-  /* if (!signInResponse) {
-    res.status(404).json({ message: 'wrong credentials!' });
-  } // Error handle inside each controller function is not Clean! Better using middlewares to handle that.*/
+  if (!signInResponse) {
+    return next(new UserExistsError());
+  } // Error handle inside each controller function is not Clean! Better using middlewares to handle that.
   res
     .status(200)
     .json({ ...signInResponse, message: 'Successful Signued Up!' });

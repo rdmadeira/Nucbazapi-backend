@@ -1,6 +1,6 @@
-import { UserDto } from 'src/core/dto/authUser.js';
+import { UserDto } from '../core/dto/authUser.js';
 import UserRepository from '../core/repositories/user.repository.js';
-import prisma from 'src/config/db.js';
+import prisma from '../config/db.js';
 
 export default class UserDatasource implements UserRepository {
   public async getUserById(userId: number): Promise<UserDto | null> {
