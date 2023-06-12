@@ -52,9 +52,12 @@ export const verifyAuth = async (
 };
 
 export const authorizedAdmin =
-  (...roles: string[]) =>
+  (
+    ...roles: string[] // ...roles es un rest parameter, o sea, acepta inumeros parametros, siendo que es del tipo array y sus elementos son los parametros recebidos.
+  ) =>
   async (req: Request, res: Response, next: NextFunction) => {
-    const userRole = req.user?.role ? req.user.role.roleName : ''; // Request ahora contiene user por el custom type en index.d.ts
+    const userRole = req.user?.role ? req.user.role.roleName : ''; // Request ahora contiene user por el custom type en index.d.ts y el middleware anterior verify auth
+    console.log('roles', roles);
 
     if (!roles.includes(userRole)) {
       return next(new NotAuthorizedError());
