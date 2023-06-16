@@ -1,6 +1,6 @@
 // Este es un custom types definition, que servirá para express
 import * as core from 'express-serve-static-core';
-import { UserDto } from '../../core/dto/authUser.js';
+import { UserDto } from '../../core/dto/authUser.ts';
 // https://blog.logrocket.com/extend-express-request-object-typescript/
 
 /* Hay que configurar el tsconfig.json, como:

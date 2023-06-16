@@ -1,5 +1,16 @@
-// La diferencia de abstract class en relación a interface, es que esta sí compila a javascript como una class comun, que sirve como prototypo
+// La diferencia de abstract class en relación a interface, es que esta sí se compila a javascript como una class comun, que sirve como prototypo
 // No se puede instanciar una class abstracta! Es como una interface, que son para tipificar.
+/* 
+Differencia entre Interface y abstract class, abstract props, metodos: Interfaces only describe what properties and methods should be implemented, and don’t describe how methods should work.
+But abstract classes may describe how a method works, like in regular classes -
+abstract class MyClass {
+   abstract method_1() // a method with no implementation
+
+   method_2() { // a method with implementation
+      // do something
+   }
+}
+*/
 export abstract class CustomError extends Error {
   abstract statusCode: number;
 

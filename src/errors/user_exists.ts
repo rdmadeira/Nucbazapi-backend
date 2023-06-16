@@ -1,7 +1,7 @@
 import { CustomError } from './custom_errors.js';
 
 export class UserExistsError extends CustomError {
-  statusCode = 400;
+  statusCode = 403;
 
   constructor() {
     super('User already exists!');

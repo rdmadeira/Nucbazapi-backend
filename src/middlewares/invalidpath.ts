@@ -1,9 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
+import { NotFoundError } from '../errors/not_found_error.js';
 
-export const invalidPathHandle = (
+export const NotFoundHandle = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  res.status(404).json({ message: 'Invalid Path' });
+  const invalidPath = new NotFoundError();
+  next(invalidPath);
 };
