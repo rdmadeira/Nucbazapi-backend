@@ -23,8 +23,8 @@ export const loginController = async (
     email,
     password,
   });
-  if (!loginResponse) {
-    return next(new NotFoundError());
+  if (!loginResponse.success) {
+    return next(loginResponse.err);
   } // Error handle inside each controller function is not Clean! Better using middlewares to handle that.
 
   res.status(200).json({ message: 'Successful Login!', ...loginResponse });
@@ -50,8 +50,8 @@ export const signinController = async (
     password,
     roleId,
   });
-  if (!signInResponse) {
-    return next(new UserExistsError());
+  if (!signInResponse.success) {
+    return next(signInResponse.err);
   } // Error handle inside each controller function is not Clean! Better using middlewares to handle that.
   res
     .status(200)

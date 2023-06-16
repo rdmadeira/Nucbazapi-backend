@@ -9,6 +9,10 @@ export const createCategory = async (
   const { categoryName } = req.body;
   const category = await interactors.CreateCategoryInteractor(categoryName);
 
+  if (!category.success) {
+    return next(category.err); // definido en datasource como badrequest
+  }
+
   res.json({ message: 'Successfully created category', data: category });
 };
 
@@ -19,6 +23,10 @@ export const getCategories = async (
   next: NextFunction
 ) => {
   const categories = await interactors.GetCategoryInteractor();
+
+  if (!categories.success) {
+    return next(categories.err);
+  }
 
   res
     .status(200)
