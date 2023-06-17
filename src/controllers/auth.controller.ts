@@ -1,22 +1,22 @@
 import { Request, Response, NextFunction } from 'express';
-import { validationResult } from 'express-validator';
-/* import { AuthResponse } from '../core/entities/Auth.js'; */
+
 import interactors from '../core/interactors/index.js';
-import { NotFoundError } from '../errors/not_found_error.js';
-import { RequestValidatorError } from '../errors/request_validation_error.js';
-import { UserExistsError } from '../errors/user_exists.js';
+/* import { NotFoundError } from '../errors/not_found_error.js';
+
+import { UserExistsError } from '../errors/user_exists.js'; */
 
 export const loginController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const errors = validationResult(req);
-
   /* When an error occurs, we call the next(error) function and pass the error object as input. 
   The Express framework will process this by skipping all the functions in the middleware function 
   stack and triggering the functions in the error handling middleware function stack: */
-  if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array())); // next function with error skips all the normal no-error middleware
+
+  // como se repite es interesante poner en un middleware para reutilizalo
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array())); // next function with error skips all the normal no-error middleware
 
   const { email, password } = req.body;
   const loginResponse = await interactors.LoginAuthInteractor({
@@ -35,13 +35,13 @@ export const signinController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const errors = validationResult(req);
   /* console.log('errors', errors); */
 
   /* When an error occurs, we call the next(error) function and pass the error object as input. 
   The Express framework will process this by skipping all the functions in the middleware function 
   stack and triggering the functions in the error handling middleware function stack: */
-  if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array())); // next function with error skips all the normal no-error middleware
+  // const errors = validationResult(req);
+  // if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array())); // next function with error skips all the normal no-error middleware
 
   const { email, password, name, roleId } = req.body;
   const signInResponse = await interactors.SigninAuthInteractor({
