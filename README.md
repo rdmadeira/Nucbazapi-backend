@@ -36,3 +36,22 @@ Por no estar muy acoplado, si cambias algo adentro del negocio, no hay que cambi
 - cors y @types/cors;
 - express-validator; - manejo de errores
 - nodemon
+- mercadopago
+
+## Insercion Mercado Pago:
+
+### Ejemplo aplicacion en node y python: https://github.com/mercadopago/checkout-payment-sample
+
+### Usuarios de prueba:
+
+```javascript
+Tener en cuenta que estes usuarios de prueba son momentaneos y si no usados por 60 dias corridos, seran eliminados.
+
+// Vendedor:
+{
+    "id": 1402258368,
+    "nickname": "TESTUSER1924106282",
+    "password": "fcWa5qeig4",
+    "email": "test_user_1443999428@testuser.com"
+}
+```
