@@ -1,4 +1,4 @@
-import { Category } from '../core/entities/category.js';
+import { CategoryDto } from '../core/dto/categoryDto.js';
 import { ResultPromiseResponse } from '../core/responseTypes/response.js';
 import CategoryRepository from '../core/repositories/category.repository.js';
 import prisma from '../config/db.js';
@@ -8,10 +8,11 @@ import { ServerError } from '../errors/server_error.js';
 export default class CategoryDataSource implements CategoryRepository {
   public async createCategory(
     categoryName: string
-  ): Promise<ResultPromiseResponse<Category>> {
+  ): Promise<ResultPromiseResponse<CategoryDto>> {
     try {
       const category = await prisma.category.create({
         data: { category: categoryName },
+        include: { products: true },
       });
       // logger.Info('Categoría Creada con suceso')
 
@@ -28,9 +29,13 @@ export default class CategoryDataSource implements CategoryRepository {
       return { success: false, err };
     }
   }
-  public async getCategories(): Promise<ResultPromiseResponse<Category[]>> {
+  public async getCategories(): Promise<ResultPromiseResponse<CategoryDto[]>> {
     try {
-      const categories = await prisma.category.findMany();
+      const categories = await prisma.category.findMany({
+        include: {
+          products: true, // adiciona products in table, because we use CategoryDto
+        },
+      });
       return { success: true, result: categories };
     } catch (error) {
       console.log('Server Not Respond!', error);

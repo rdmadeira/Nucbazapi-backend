@@ -25,47 +25,39 @@ model Role {
 // Cada cambio en la base de datos, se tiene que hacer un nuevo migrate de prisma
 
 model User {
-  id          Int           @id @default(autoincrement())
-  email       String        @unique
-  name        String
-  password    String
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  UserAddress UserAddress[]
-  Orders      Orders[]
-  role        Role          @relation(fields: [roleId], references: [id])
-  roleId      Int           @default(2)
-}
-
-model UserAddress {
-  id      Int    @id @default(autoincrement())
-  street  String
-  number  String
-  zipCode String
-  city    String
-  user    User   @relation(fields: [userId], references: [id])
-  userId  Int
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Orders    Orders[]
+  role      Role     @relation(fields: [roleId], references: [id])
+  roleId    Int      @default(2)
 }
 
 // Category
 model Category {
   id        Int        @id @default(autoincrement())
   category  String
+  imgTag    String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
-  Products  Products[]
+  products  Products[]
 }
 
 // Products
 model Products {
-  id         Int          @id @default(autoincrement())
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
-  price      Float
-  imgUrl     String
-  category   Category     @relation(fields: [categoryId], references: [id])
-  categoryId Int
-  OrderItems OrderItems[]
+  id          Int          @id @default(autoincrement())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  name        String
+  price       Float
+  imgUrl      String
+  description String
+  category    Category     @relation(fields: [categoryId], references: [id])
+  categoryId  Int
+  OrderItems  OrderItems[]
 }
 
 // Orders
@@ -75,12 +67,21 @@ model Status {
   Orders Orders[]
 }
 
+model ShippingDetails {
+  id        Int    @id @default(autoincrement())
+  domicilio String
+  localidad String
+}
+
 model Orders {
   id             Int          @id @default(autoincrement())
   user           User         @relation(fields: [userId], references: [id])
   status         Status       @relation(fields: [statusId], references: [id])
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+  ShippingPrice  Float
+  subTotal       Float
+  total          Float
   paymentId      String // Datos de Mercado libre
   merchanOrderId String // Datos de Mercado libre
   userId         Int
