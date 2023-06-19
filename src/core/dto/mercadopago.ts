@@ -3,8 +3,8 @@ export enum Currencies {
 }
 
 export interface PaymentItem {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   quantity: number;
   currency_id: Currencies;
   unit_price: number;

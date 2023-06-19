@@ -1,4 +1,5 @@
 interface OrderItemsDto {
+  title: string;
   quantity: number;
   unityPrice: number;
   productId: number;
