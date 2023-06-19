@@ -82,8 +82,8 @@ model Orders {
   ShippingPrice  Float
   subTotal       Float
   total          Float
-  paymentId      String // Datos de Mercado libre
-  merchanOrderId String // Datos de Mercado libre
+  paymentId      String? // Datos de Mercado libre
+  merchanOrderId String? // Datos de Mercado libre
   userId         Int
   statusId       Int
   OrderItems     OrderItems[]
