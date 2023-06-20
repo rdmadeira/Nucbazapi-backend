@@ -7,6 +7,13 @@ import {
   authSigninInteractor,
 } from './auth.interactor.js';
 import { getUserByIdInteractor } from './user.interactor.js';
+import {
+  createProductInteractor,
+  deleteProductInteractor,
+  getProductInteractor,
+  getProductsInteractor,
+  updateProductInteractor,
+} from './product.interactor.js';
 
 import CategoryDataSource from '../../data_sources/category.datasource.js';
 import AuthDataSource from '../../data_sources/auth.datasource.js';
@@ -17,6 +24,7 @@ import UserDatasource from '../../data_sources/user.datasource.js';
 const categoryRepository = new CategoryDataSource();
 const authRepository = new AuthDataSource();
 const userRepository = new UserDatasource();
+/* const productsRepository =  */
 
 //Interactors:
 const CreateCategoryInteractor = createCategoryInteractor(categoryRepository);
