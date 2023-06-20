@@ -1,4 +1,8 @@
-import { ProductRequestDto, ProductResponseDto } from '../core/dto/product.js';
+import {
+  ProductRequestDto,
+  ProductResponseDto,
+  ProductUpdateData,
+} from '../core/dto/product.js';
 import { Product } from '../core/entities/products.js';
 import ProductsRepository from '../core/repositories/products.repository.js';
 import { ResultPromiseResponse } from '../core/responseTypes/response.js';
@@ -112,9 +116,9 @@ export default class ProductsDataSource implements ProductsRepository {
 
   public async updateProduct(
     productId: number,
-    productProps: ProductRequestDto
+    productProps: ProductUpdateData
   ): Promise<ResultPromiseResponse<Product>> {
-    const productToUpdate = await prisma.products.findUnique({
+    /* const productToUpdate = await prisma.products.findUnique({
       where: { id: productId },
     });
 
@@ -122,19 +126,20 @@ export default class ProductsDataSource implements ProductsRepository {
       return {
         success: false,
         err: new NotFoundError(),
-      };
-
-    const productPropsArr = Object.keys(productProps) as Array<never>;
-
-    productPropsArr.forEach((prop) => {
-      productToUpdate[prop] = productProps[prop];
-    });
+      }; */
 
     try {
       const updateProduct = await prisma.products.update({
-        where: { id: productToUpdate.id },
-        /* data: { ...productToUpdate, ...productProp }, */
-        data: { ...productToUpdate },
+        where: { id: productId },
+        data: {
+          /* ...productToUpdate,
+          name: productProps.name || productToUpdate.name,
+          price: productProps.price || productToUpdate.price,
+          description: productProps.description || productToUpdate.description,
+          imgUrl: productProps.imgUrl || productToUpdate.imgUrl,
+          categoryId: productProps.categoryId || productToUpdate.categoryId, */
+          ...productProps,
+        },
       });
 
       return { success: true, result: updateProduct };

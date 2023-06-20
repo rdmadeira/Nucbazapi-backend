@@ -1,5 +1,9 @@
 import { Product } from '../entities/products.js';
-import { ProductRequestDto, ProductResponseDto } from '../dto/product.js';
+import {
+  ProductRequestDto,
+  ProductResponseDto,
+  ProductUpdateData,
+} from '../dto/product.js';
 import ProductsRepository from '../repositories/products.repository.js';
 import { ResultPromiseResponse } from '../responseTypes/response.js';
 
@@ -37,7 +41,7 @@ export const getProductsInteractor =
 
 export const getProductInteractor =
   (productsRepository: ProductsRepository) =>
-  async (productId: number): Promise<ResultPromiseResponse<Product>> => {
+  async (productId: number): Promise<ResultPromiseResponse<Product | null>> => {
     const product = await productsRepository.getProduct(productId);
 
     return product;
@@ -57,13 +61,7 @@ export const updateProductInteractor =
   (productsRepository: ProductsRepository) =>
   async (
     productId: number,
-    productProp: {
-      name?: String;
-      price?: number;
-      description?: String;
-      imgUrl?: string;
-      categoryId?: number;
-    }
+    productProp: ProductUpdateData
   ): Promise<ResultPromiseResponse<ProductResponseDto>> => {
     const product = await productsRepository.updateProduct(
       productId,

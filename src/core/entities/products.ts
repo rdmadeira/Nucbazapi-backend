@@ -1,10 +1,10 @@
 export interface Product {
   id: number;
-  name: String;
+  name: string;
   createdAt: Date;
   updatedAt: Date;
   price: number;
-  description: String;
+  description: string;
   imgUrl: string;
   categoryId: number;
 }
