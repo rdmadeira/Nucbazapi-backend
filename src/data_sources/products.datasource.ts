@@ -9,15 +9,14 @@ import { ResultPromiseResponse } from '../core/responseTypes/response.js';
 import { ServerError } from '../errors/server_error.js';
 
 import prisma from '../config/db.js';
-import { NotFoundError } from '../errors/not_found_error.js';
 
-import { Products } from '@prisma/client';
+import { BadRequestError } from '../errors/bad_request_error.js';
 
 export default class ProductsDataSource implements ProductsRepository {
   public async getProducts(): Promise<ResultPromiseResponse<Product[]>> {
     try {
       const products = await prisma.products.findMany({
-        orderBy: { name: 'asc' },
+        orderBy: { id: 'asc' },
       });
 
       return {
@@ -46,8 +45,8 @@ export default class ProductsDataSource implements ProductsRepository {
 
       if (!product)
         return {
-          success: true,
-          result: null,
+          success: false,
+          err: new BadRequestError('Product does not exists!'),
         };
 
       return {

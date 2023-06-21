@@ -18,11 +18,13 @@ export const loginController = async (
   // const errors = validationResult(req);
   // if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array())); // next function with error skips all the normal no-error middleware
 
+  console.log('body - authcontroller:26');
   const { email, password } = req.body;
   const loginResponse = await interactors.LoginAuthInteractor({
     email,
     password,
   });
+
   if (!loginResponse.success) {
     return next(loginResponse.err);
   } // Error handle inside each controller function is not Clean! Better using middlewares to handle that.

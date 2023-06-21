@@ -1,9 +1,11 @@
 import { Router, Request, Response } from 'express';
 import CategoryRoutes from './category.routes.js';
 import AuthRoutes from './auth.routes.js';
+import ProductsRoutes from './products.routes.js';
 
 const router = Router();
 
+router.use('/products', ProductsRoutes);
 router.use('/category', CategoryRoutes);
 router.use('/auth', AuthRoutes);
 router.get('/', (req: Request, res: Response) => {

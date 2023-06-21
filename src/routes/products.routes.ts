@@ -11,9 +11,9 @@ import { authorizedAdmin, verifyAuth } from '../middlewares/auth.js';
 const router = Router();
 
 router
-  .get('products/product', productGetController)
+  .get('/product', productGetController)
   .put(
-    'products/product',
+    '/product',
     verifyAuth,
     authorizedAdmin('admin'),
     productsUpdateController
@@ -26,10 +26,7 @@ router
   );
 
 router
-  .get('products', productsGetController)
-  .post(
-    'products',
-    verifyAuth,
-    authorizedAdmin('admin'),
-    productsCreateController
-  );
+  .get('/', productsGetController)
+  .post('/', verifyAuth, authorizedAdmin('admin'), productsCreateController);
+
+export default router;
