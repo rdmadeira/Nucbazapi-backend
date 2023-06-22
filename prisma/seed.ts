@@ -2,6 +2,17 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function seed() {
+  await prisma.status.createMany({
+    data: [
+      // estados existentes en Mercadopago:
+      { state: 'active' },
+      { state: 'pending' },
+      { state: 'cancelled' },
+      { state: 'disabled' },
+      { state: 'approved' },
+      { state: 'rejected' },
+    ],
+  });
   /* await prisma.role.createMany({
     data: [
       {
@@ -12,7 +23,7 @@ export async function seed() {
       },
     ],
   }); */
-  await prisma.category.createMany({
+  /* await prisma.category.createMany({
     data: [
       {
         category: 'Bahiana',
@@ -34,11 +45,11 @@ export async function seed() {
         imgTag: 'img/tag_sambu.jpeg',
       },
     ],
-  });
+  }); */
 
   // Borra todas las lineas de la tabla Category
-  await prisma.$queryRaw`TRUNCATE TABLE "public"."Products" CASCADE;`;
-  await prisma.products.createMany({
+  /* await prisma.$queryRaw`TRUNCATE TABLE "public"."Products" CASCADE;`; */
+  /* await prisma.products.createMany({
     data: [
       {
         id: 1,
@@ -130,8 +141,8 @@ export async function seed() {
           'Hamburguesa de asado de 220g, mostaza dulce, bacon, cebolla caramelizada, 3 cheddars, aros de cebolla, papas fritas.',
         price: 100,
       },
-    ],
-  });
+    ], 
+  }); */
 }
 
 seed()

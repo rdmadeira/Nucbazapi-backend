@@ -63,30 +63,33 @@ model Products {
 // Orders
 model Status {
   id     Int      @id @default(autoincrement())
-  state  String // pendiente, en proceso, finalizado...
+  state  String   @unique @default("pending") // pendiente, en proceso, finalizado...
   Orders Orders[]
 }
 
 model ShippingDetails {
-  id        Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   domicilio String
   localidad String
+  Orders    Orders[]
 }
 
 model Orders {
-  id             Int          @id @default(autoincrement())
-  user           User         @relation(fields: [userId], references: [id])
-  status         Status       @relation(fields: [statusId], references: [id])
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
-  ShippingPrice  Float
-  subTotal       Float
-  total          Float
-  paymentId      String? // Datos de Mercado libre
-  merchanOrderId String? // Datos de Mercado libre
-  userId         Int
-  statusId       Int
-  OrderItems     OrderItems[]
+  id                Int             @id @default(autoincrement())
+  user              User            @relation(fields: [userId], references: [id])
+  status            Status          @relation(fields: [statusId], references: [id])
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  ShippingPrice     Float
+  subTotal          Float
+  total             Float
+  paymentId         String? // Datos de Mercado libre
+  merchanOrderId    String? // Datos de Mercado libre
+  shippingDetails   ShippingDetails @relation(fields: [shippingDetailsId], references: [id])
+  userId            Int
+  statusId          Int
+  OrderItems        OrderItems[]
+  shippingDetailsId Int
 }
 
 model OrderItems {

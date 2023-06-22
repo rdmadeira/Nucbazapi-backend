@@ -2,8 +2,8 @@ export interface Orders {
   id: number;
   createdAt: Date;
   updatedAt: Date;
-  paymentId: string;
-  merchanOrderId: string;
+  paymentId: string | null;
+  merchanOrderId: string | null;
   userId: number;
   statusId: number;
 }
