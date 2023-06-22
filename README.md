@@ -54,4 +54,13 @@ Tener en cuenta que estes usuarios de prueba son momentaneos y si no usados por 
     "password": "fcWa5qeig4",
     "email": "test_user_1443999428@testuser.com"
 }
+
+// Pagador:
+{
+"id": 1402258408,
+    "nickname": "TESTUSER1390767732",
+    "password": "fj3d3NblKz",
+    "email": "test_user_1390767732@testuser.com"
+
+}
 ```
