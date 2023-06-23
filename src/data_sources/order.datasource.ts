@@ -4,6 +4,7 @@ import OrderRepository from '../core/repositories/order.repository.js';
 import { ResultPromiseResponse } from '../core/responseTypes/response.js';
 import prisma from '../config/db.js';
 import { ServerError } from '../errors/server_error.js';
+import { it } from 'node:test';
 
 export default class OrderDataSource implements OrderRepository {
   public async createOrder(
@@ -23,6 +24,12 @@ export default class OrderDataSource implements OrderRepository {
         err: new ServerError('Error inesperado en el servidor'),
       };
 
+    const OI = data.items.map((item) => ({
+      quantity: item.quantity,
+      unityPrice: item.unityPrice,
+      productId: item.productId,
+    }));
+
     const order = await prisma.orders.create({
       // La transaction según docu de prisma, se hace por Nested writes (si son dependentes), $transaction Api (se son independentes). En este
       // caso, usamos la Nested, para orders y orderItems:
@@ -32,8 +39,11 @@ export default class OrderDataSource implements OrderRepository {
         ShippingPrice: data.shippingPrice,
         total: data.total,
         subTotal: data.subtotal,
+        shippingDetails: {
+          create: data.shippingDetails,
+        },
         OrderItems: {
-          createMany: { data: [...data.items] }, // orderId no hace parte del request al crear, porque se genera solo al crear el orden.
+          createMany: { data: [...OI] }, // orderId no hace parte del request al crear, porque se genera solo al crear el orden.
         },
       },
       include: {
