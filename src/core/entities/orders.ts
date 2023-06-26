@@ -9,9 +9,9 @@ export interface Orders {
 }
 
 export interface OrderItems {
-  id: number;
+  id?: number;
   quantity: number;
   unityPrice: number;
-  orderId: number;
+  orderId?: number;
   productId: number;
 }
