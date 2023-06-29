@@ -51,6 +51,7 @@ export default class OrderDataSource implements OrderRepository {
           subTotal: data.subtotal,
           shippingDetailsId: shippingDetails.id,
           OrderItems: {
+            // En prisma, se llama, en transactions, nested writes, o sea crea la linea
             createMany: { data: [...OI] }, // orderId no hace parte del request al crear, porque se genera solo al crear el orden.
           },
         },
