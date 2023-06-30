@@ -4,7 +4,6 @@ import OrderRepository from '../core/repositories/order.repository.js';
 import { ResultPromiseResponse } from '../core/responseTypes/response.js';
 import prisma from '../config/db.js';
 import { ServerError } from '../errors/server_error.js';
-import { it } from 'node:test';
 import { OrderItems } from '../core/entities/orders.js';
 
 export default class OrderDataSource implements OrderRepository {
@@ -18,6 +17,7 @@ export default class OrderDataSource implements OrderRepository {
       },
     });
 
+    // Acá está distinto del nucba-zapi-api 5 56min. El profesor no crea el shippingDetails acá, pero sí al crear el order, como nested writes. Hace eso porque usa una relación one-to-many entre orders y shippingDetails. Yo decidi usar al reves, o sea relación one-to-many entre shippingDetails y orders. Por eso lo creé acá y puse include shippingDetails: true, al crear el orden.
     const shippingDetails = await prisma.shippingDetails.create({
       data: {
         localidad: data.shippingDetails.localidad,
@@ -39,7 +39,7 @@ export default class OrderDataSource implements OrderRepository {
     }));
 
     try {
-      const order = await prisma.orders.create({
+      const order: Orders = await prisma.orders.create({
         // La transaction según docu de prisma, se hace por Nested writes (si son dependentes), $transaction Api (se son independentes). En este
         // caso, usamos la Nested, para orders y orderItems:
 
@@ -52,11 +52,11 @@ export default class OrderDataSource implements OrderRepository {
           shippingDetailsId: shippingDetails.id,
           OrderItems: {
             // En prisma, se llama, en transactions, nested writes, o sea crea la linea
-            createMany: { data: [...OI] }, // orderId no hace parte del request al crear, porque se genera solo al crear el orden.
+            create: [...OI], // orderId no hace parte del request al crear, porque se genera solo al crear el orden.
           },
-        },
+        }, // Está distinto del api-nucba-zapi 5 - 56min. Yo adopté una relación one-to-many entre shippingDetails y orders. El profesor adoptó al revés, one-to-many entre orders y shippingDetails.
         include: {
-          OrderItems: true,
+          shippingDetails: true,
         },
       });
       return { result: order, success: true };
@@ -67,5 +67,5 @@ export default class OrderDataSource implements OrderRepository {
       return { success: false, err: err };
     }
   }
-  public async getOrder(): Promise<ResultPromiseResponse<Orders>> {}
+  /* public async getOrder(): Promise<ResultPromiseResponse<Orders>> {} */
 }

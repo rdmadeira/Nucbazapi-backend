@@ -21,6 +21,8 @@ import AuthDataSource from '../../data_sources/auth.datasource.js';
 import UserDatasource from '../../data_sources/user.datasource.js';
 import ProductsDataSource from '../../data_sources/products.datasource.js';
 import { createOrderInteractor } from './orders.interactor.js';
+import OrderDataSource from '../../data_sources/order.datasource.js';
+import PaymentDataSource from '../../data_sources/payment.datasource.js';
 
 //implementa el category repository:
 // Repositories:
@@ -28,7 +30,8 @@ const categoryRepository = new CategoryDataSource();
 const authRepository = new AuthDataSource();
 const userRepository = new UserDatasource();
 const productsRepository = new ProductsDataSource();
-const orderRepository = new OrderData();
+const orderRepository = new OrderDataSource();
+const paymentRepository = new PaymentDataSource();
 /* const productsRepository =  */
 
 //Interactors:
@@ -42,7 +45,10 @@ const DeleteProductInteractor = deleteProductInteractor(productsRepository);
 const GetProductInteractor = getProductInteractor(productsRepository);
 const GetProductsInteractor = getProductsInteractor(productsRepository);
 const UpdateProductInteractor = updateProductInteractor(productsRepository);
-const CreateCategoryInteractor = createOrderInteractor();
+const CreateOrderInteractor = createOrderInteractor(
+  orderRepository,
+  paymentRepository
+);
 
 const interactors = {
   CreateCategoryInteractor,
@@ -55,6 +61,7 @@ const interactors = {
   GetProductInteractor,
   GetProductsInteractor,
   UpdateProductInteractor,
+  CreateOrderInteractor,
 };
 
 export default interactors;
