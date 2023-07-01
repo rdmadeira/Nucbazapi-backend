@@ -1,4 +1,4 @@
-import { configure, preferences } from 'mercadopago';
+import /* configure, preferences */ mercadopago from 'mercadopago';
 import { CreatePreferencePayload } from 'mercadopago/models/preferences/create-payload.model.js';
 import { PreferenceCreateResponse } from 'mercadopago/resources/preferences.js';
 import process from 'process';
@@ -18,7 +18,11 @@ export default class PaymentDataSource implements PaymentRepository {
     const preferenceData: CreatePreferencePayload = {
       /* CreatePreferencePayload es un tipado de mercadopago */
       ...data,
-      items: [],
+
+      // shipments.cost Es una prop del tipo CreatePreferencePayload, para agregarnos precio de envío,
+      shipments: {
+        cost: data.shipments?.cost,
+      },
       back_urls: {
         pending: process.env.PENDING_BACK_URL!,
         success: process.env.SUCCESS_BACK_URL!,
@@ -27,17 +31,27 @@ export default class PaymentDataSource implements PaymentRepository {
     };
 
     // Crea la preferencia:
-    const preference = await preferences.create(preferenceData);
+    try {
+      const preference = await mercadopago.preferences.create(preferenceData);
+      return {
+        preferenceId: preference.body.id,
+        init_point: preference.body.init_point,
+        sandbox_init_point: preference.body.sandbox_init_point,
+      };
+    } catch (error) {
+      console.log('error', error);
+
+      return {
+        preferenceId: 'null',
+        init_point: 'null',
+        sandbox_init_point: 'preference.body.sandbox_init_point',
+      };
+    }
 
     // Retorna el objeto tipo MercadoPagoResponse:
-    return {
-      preferenceId: preference.body.id,
-      init_point: preference.body.init_point,
-      sandbox_init_point: preference.body.sandbox_init_point,
-    };
   }
 }
 
 function configMercadoPagoSDK() {
-  configure({ access_token: process.env.ACCESS_TOKEN_MP! });
+  mercadopago.configure({ access_token: process.env.ACCESS_TOKEN_MP! });
 }

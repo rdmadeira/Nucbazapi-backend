@@ -5,7 +5,10 @@ import PaymentRepository from '../repositories/payment.repository.js';
 import { ResultPromiseResponse } from '../responseTypes/response.js';
 
 export const createOrderInteractor =
-  (orderRepository: OrderRepository, paymentRepository: PaymentRepository) =>
+  (
+    orderRepository: OrderRepository,
+    paymentRepository: PaymentRepository // Crea el order y el payment en la base de datos
+  ) =>
   async (
     orderData: OrderRequestDto
   ): Promise<ResultPromiseResponse<OrderResponseDto>> => {
@@ -30,8 +33,11 @@ export const createOrderInteractor =
     });
 
     const preference = await paymentRepository.createPreference({
-      external_reference: newOrderResult.result.id.toString(),
+      external_reference: newOrderResult.result.id.toString(), // es la referencia de la preferencia, que es el id de la order
       items: paymentItems,
+      shipments: {
+        cost: orderData.shippingPrice,
+      },
     });
 
     //retornamos el orderId, y el init_point

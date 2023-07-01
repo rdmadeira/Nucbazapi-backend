@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 import CategoryRoutes from './category.routes.js';
 import AuthRoutes from './auth.routes.js';
 import ProductsRoutes from './products.routes.js';
-import OrderRoutes from './order.Routes.js';
+import OrderRoutes from './order.routes.js';
 
 const router = Router();
 

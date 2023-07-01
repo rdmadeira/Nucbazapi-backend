@@ -19,5 +19,9 @@ export interface MercadoPagoResponse {
 
 export interface MercadoPagoPaymentRequest {
   items: PaymentItem[];
+  shipments?: {
+    cost?: number;
+  };
+
   external_reference: string; // es el id de nuestro order que sirvirá de referencia
 }
