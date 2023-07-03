@@ -47,7 +47,7 @@ export const productsGetController = async (
 
   res
     .status(200)
-    .json({ ...productsResponse, message: 'Product succesfully request!' });
+    .json({ ...productsResponse, message: 'Products succesfully request!' });
 };
 
 export const productsUpdateController = async (

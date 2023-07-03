@@ -22,6 +22,7 @@
   "homepage": "https://github.com/rdmadeira/Nucbazapi-backend#readme",
   "dependencies": {
     "@prisma/client": "^4.15.0",
+    "@tanstack/react-query": "^4.29.19",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.13",
     "@types/dotenv": "^8.2.0",

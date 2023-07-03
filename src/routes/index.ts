@@ -7,7 +7,7 @@ import OrderRoutes from './order.routes.js';
 const router = Router();
 
 router.use('/products', ProductsRoutes);
-router.use('/category', CategoryRoutes);
+router.use('/categories', CategoryRoutes);
 router.use('/auth', AuthRoutes);
 router.use('/orders', OrderRoutes);
 router.get('/', (req: Request, res: Response) => {
