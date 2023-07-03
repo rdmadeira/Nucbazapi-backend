@@ -77,5 +77,42 @@ export default class OrderDataSource implements OrderRepository {
       return { success: false, err: err };
     }
   }
+  public async getOrdersByUserId(
+    userId: number
+  ): Promise<ResultPromiseResponse<Orders[]>> {
+    try {
+      const orders = await prisma.orders.findMany({
+        where: {
+          userId: userId,
+        },
+        include: {
+          OrderItems: true,
+        },
+      });
+      return { result: orders, success: true };
+    } catch (error: any) {
+      const err = new ServerError(
+        error.message || 'Error Interno del Servidor'
+      );
+      return { err: error, success: false };
+    }
+  }
+  public async getOrder(
+    orderId: number
+  ): Promise<ResultPromiseResponse<Orders | null>> {
+    try {
+      const order = await prisma.orders.findUnique({
+        where: { id: orderId },
+        include: { OrderItems: true },
+      });
+
+      return { result: order, success: true };
+    } catch (error: any) {
+      const err = new ServerError(
+        error.message || 'Error interno en el Servidor'
+      );
+      return { err, success: false };
+    }
+  }
   /* public async getOrder(): Promise<ResultPromiseResponse<Orders>> {} */
 }

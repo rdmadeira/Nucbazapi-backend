@@ -50,6 +50,21 @@ export default class PaymentDataSource implements PaymentRepository {
 
     // Retorna el objeto tipo MercadoPagoResponse:
   }
+  public async getPreference(
+    preferenceId: string
+  ): Promise<MercadoPagoResponse> {
+    ////////////////// Buscar paymentIntentId ///////////////////////////
+    const paymentIntentId: string = '';
+
+    const mpResponse = await fetch(
+      `https://api.mercadopago.com/point/integration-api/payment-intents/${paymentIntentId}/events`,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.ACCESS_TOKEN_MP!}`,
+        },
+      }
+    );
+  }
 }
 
 function configMercadoPagoSDK() {

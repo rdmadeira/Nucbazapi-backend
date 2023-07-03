@@ -51,3 +51,13 @@ export const createOrderInteractor =
       },
     };
   };
+
+export const getOrdersByUserIdInteractor =
+  (orderRepository: OrderRepository, paymentRepository: PaymentRepository) =>
+  async (userId: number) => {
+    const orders = await orderRepository.getOrdersByUserId(userId);
+
+    if (!orders.success) return orders;
+
+    const paymentResponse = await paymentRepository;
+  };
