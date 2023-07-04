@@ -24,3 +24,23 @@ export interface MercadoPagoPaymentRequest {
   };
   external_reference: string; // es el id de nuestro order que sirvirá de referencia
 }
+
+export interface MercadoPagoPaymentResponseDto {
+  id?: number;
+  date_created?: string;
+  date_approved?: string;
+  date_last_updated?: string;
+  money_release_date?: string;
+  operation_type?: string;
+  payment_method_id?: string;
+  payment_type_id?: string;
+  status?: string;
+  status_detail: string;
+  currency_id?: string;
+  description?: string;
+}
+
+export interface MercadoPagoPaymentsResponseDto {
+  results: MercadoPagoPaymentResponseDto[];
+  paging: { total: number; limit: number; offset: number };
+}

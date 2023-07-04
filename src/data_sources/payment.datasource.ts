@@ -6,8 +6,11 @@ import prisma from '../config/db.js';
 import {
   MercadoPagoPaymentRequest,
   MercadoPagoResponse,
+  MercadoPagoPaymentResponseDto,
+  MercadoPagoPaymentsResponseDto,
 } from '../core/dto/mercadopago.js';
 import PaymentRepository from '../core/repositories/payment.repository.js';
+import { MercadoPagoPayment } from 'mercadopago/resources/payment.js';
 
 export default class PaymentDataSource implements PaymentRepository {
   public async createPreference(
@@ -53,6 +56,26 @@ export default class PaymentDataSource implements PaymentRepository {
     }
 
     // Retorna el objeto tipo MercadoPagoResponse:
+  }
+  public async getPaymentFromOrderId(
+    orderId: string
+  ): Promise<MercadoPagoPaymentResponseDto> {
+    try {
+      const paymentsResult: Promise<MercadoPagoPaymentsResponseDto> = fetch(
+        `https://api.mercadopago.com/v1/payments/search?external_reference=${orderId}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${process.env.REACT_APP_ACCESS_TOKEN}`,
+          },
+        }
+      );
+      const payment = (await paymentsResult).results[0];
+
+      return payment;
+    } catch (error) {
+      return;
+    }
   }
 }
 
