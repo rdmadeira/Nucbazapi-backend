@@ -1,5 +1,5 @@
 export interface Orders {
-  id: number;
+  id: string;
   createdAt: Date;
   updatedAt: Date;
   paymentId: string | null;

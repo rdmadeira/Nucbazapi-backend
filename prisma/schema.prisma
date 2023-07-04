@@ -75,7 +75,7 @@ model ShippingDetails {
 }
 
 model Orders {
-  id                Int             @id @default(autoincrement())
+  id                String          @id @default(uuid())
   user              User            @relation(fields: [userId], references: [id])
   status            Status          @relation(fields: [statusId], references: [id])
   createdAt         DateTime        @default(now())
@@ -98,6 +98,6 @@ model OrderItems {
   unityPrice Float // El precio desacoplamos y desrelacionamos al precio del producto, porque al actualizar los precios, no afecte el precio del orden en el momento del pedido. 
   product    Products @relation(fields: [productId], references: [id])
   order      Orders   @relation(fields: [orderId], references: [id])
-  orderId    Int
+  orderId    String
   productId  Int
 }

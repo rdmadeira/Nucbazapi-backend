@@ -94,11 +94,11 @@ export default class OrderDataSource implements OrderRepository {
       const err = new ServerError(
         error.message || 'Error Interno del Servidor'
       );
-      return { err: error, success: false };
+      return { err, success: false };
     }
   }
   public async getOrder(
-    orderId: number
+    orderId: string
   ): Promise<ResultPromiseResponse<Orders | null>> {
     try {
       const order = await prisma.orders.findUnique({
@@ -114,5 +114,4 @@ export default class OrderDataSource implements OrderRepository {
       return { err, success: false };
     }
   }
-  /* public async getOrder(): Promise<ResultPromiseResponse<Orders>> {} */
 }

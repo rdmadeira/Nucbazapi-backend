@@ -1,6 +1,6 @@
 import /* configure, preferences */ mercadopago from 'mercadopago';
 import { CreatePreferencePayload } from 'mercadopago/models/preferences/create-payload.model.js';
-import { PreferenceCreateResponse } from 'mercadopago/resources/preferences.js';
+
 import process from 'process';
 import prisma from '../config/db.js';
 import {
@@ -18,7 +18,7 @@ export default class PaymentDataSource implements PaymentRepository {
     const preferenceData: CreatePreferencePayload = {
       /* CreatePreferencePayload es un tipado de mercadopago */
       ...data,
-
+      external_reference: data.external_reference,
       // shipments.cost Es una prop del tipo CreatePreferencePayload, para agregarnos precio de envío,
       shipments: {
         cost: data.shipments?.cost,
@@ -33,6 +33,10 @@ export default class PaymentDataSource implements PaymentRepository {
     // Crea la preferencia:
     try {
       const preference = await mercadopago.preferences.create(preferenceData);
+      await prisma.orders.update({
+        where: { id: data.external_reference },
+        data: { paymentId: preference.body.id },
+      });
       return {
         preferenceId: preference.body.id,
         init_point: preference.body.init_point,
@@ -49,21 +53,6 @@ export default class PaymentDataSource implements PaymentRepository {
     }
 
     // Retorna el objeto tipo MercadoPagoResponse:
-  }
-  public async getPreference(
-    preferenceId: string
-  ): Promise<MercadoPagoResponse> {
-    ////////////////// Buscar paymentIntentId ///////////////////////////
-    const paymentIntentId: string = '';
-
-    const mpResponse = await fetch(
-      `https://api.mercadopago.com/point/integration-api/payment-intents/${paymentIntentId}/events`,
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.ACCESS_TOKEN_MP!}`,
-        },
-      }
-    );
   }
 }
 

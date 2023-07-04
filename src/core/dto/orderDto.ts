@@ -17,7 +17,7 @@ export interface OrderRequestDto {
   total: number;
 }
 export interface OrderResponseDto {
-  orderId: number;
+  orderId: string;
   preferenceId: string;
   init_point: string;
 }

@@ -33,7 +33,7 @@ export const createOrderInteractor =
     });
 
     const preference = await paymentRepository.createPreference({
-      external_reference: newOrderResult.result.id.toString(), // es la referencia de la preferencia, que es el id de la order
+      external_reference: newOrderResult.result.id, // es la referencia de la preferencia, que es el id de la order
       items: paymentItems,
       shipments: {
         cost: orderData.shippingPrice,
@@ -41,7 +41,6 @@ export const createOrderInteractor =
     });
 
     //retornamos el orderId, y el init_point
-    console.log('preference', preference);
 
     return {
       success: true,

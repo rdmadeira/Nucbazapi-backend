@@ -13,5 +13,5 @@ export const createOrder = async (
     return next(orderResponse.err); // definido en datasource como badrequest
   }
 
-  res.json({ message: 'Successfully created category', data: orderResponse });
+  res.json({ message: 'Successfully created order', data: orderResponse });
 };
