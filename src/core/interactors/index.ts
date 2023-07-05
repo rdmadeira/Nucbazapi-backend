@@ -20,7 +20,10 @@ import CategoryDataSource from '../../data_sources/category.datasource.js';
 import AuthDataSource from '../../data_sources/auth.datasource.js';
 import UserDatasource from '../../data_sources/user.datasource.js';
 import ProductsDataSource from '../../data_sources/products.datasource.js';
-import { createOrderInteractor } from './orders.interactor.js';
+import {
+  createOrderInteractor,
+  getOrdersByUserIdInteractor,
+} from './orders.interactor.js';
 import OrderDataSource from '../../data_sources/order.datasource.js';
 import PaymentDataSource from '../../data_sources/payment.datasource.js';
 
@@ -49,6 +52,10 @@ const CreateOrderInteractor = createOrderInteractor(
   orderRepository,
   paymentRepository
 );
+const GetOrdersByUserIdInteractor = getOrdersByUserIdInteractor(
+  orderRepository,
+  paymentRepository
+);
 
 const interactors = {
   CreateCategoryInteractor,
@@ -62,6 +69,7 @@ const interactors = {
   GetProductsInteractor,
   UpdateProductInteractor,
   CreateOrderInteractor,
+  GetOrdersByUserIdInteractor,
 };
 
 export default interactors;

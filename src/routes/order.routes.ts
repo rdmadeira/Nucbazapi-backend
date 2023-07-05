@@ -1,8 +1,11 @@
 import { Router } from 'express';
 import { verifyAuth } from '../middlewares/auth.js';
-import { createOrder } from '../controllers/order.controller.js';
+import {
+  createOrder,
+  getOrdersByUserIdController,
+} from '../controllers/order.controller.js';
 import { validateRequest } from '../middlewares/validateRequest.js';
-import { body } from 'express-validator';
+import { body, query } from 'express-validator';
 
 const router = Router();
 
@@ -27,5 +30,14 @@ router.post(
   verifyAuth,
   createOrder
 ); // Ruta con metodo post está protegida (si es de un user loggeado) y autorizada (si el user es de un Role admin) para admin!!
+
+router.get(
+  '/:userId',
+  query('userId')
+    .isNumeric()
+    .notEmpty()
+    .withMessage('userId has to be a number'),
+  getOrdersByUserIdController
+);
 
 export default router;

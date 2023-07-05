@@ -41,6 +41,6 @@ export interface MercadoPagoPaymentResponseDto {
 }
 
 export interface MercadoPagoPaymentsResponseDto {
-  results: MercadoPagoPaymentResponseDto[];
-  paging: { total: number; limit: number; offset: number };
+  results: MercadoPagoPaymentResponseDto[] | [];
+  paging: { total: number; limit: number; offset: number } | null;
 }

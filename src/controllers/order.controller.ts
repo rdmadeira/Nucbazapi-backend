@@ -15,3 +15,13 @@ export const createOrder = async (
 
   res.json({ message: 'Successfully created order', data: orderResponse });
 };
+
+export const getOrdersByUserIdController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId: number = parseInt(req.query.userId as string);
+
+  const orders = await interactors.GetOrdersByUserIdInteractor(userId);
+};

@@ -87,9 +87,10 @@ export default class OrderDataSource implements OrderRepository {
         },
         include: {
           OrderItems: true,
+          status: true,
         },
       });
-      const payments = await fetch();
+
       return { result: orders, success: true };
     } catch (error: any) {
       const err = new ServerError(

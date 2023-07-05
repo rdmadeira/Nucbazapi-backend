@@ -3,6 +3,8 @@ import { Currencies, PaymentItem } from '../dto/mercadopago.js';
 import OrderRepository from '../repositories/order.repository.js';
 import PaymentRepository from '../repositories/payment.repository.js';
 import { ResultPromiseResponse } from '../responseTypes/response.js';
+import prisma from '../../config/db.js';
+import { Orders } from '../entities/orders.js';
 
 export const createOrderInteractor =
   (
@@ -41,22 +43,40 @@ export const createOrderInteractor =
     });
 
     //retornamos el orderId, y el init_point
+    /* orderId: string;
+preferenceId: string;
+init_point: string; */
+    if (!preference.success) return preference;
 
     return {
       success: true,
-      result: {
-        orderId: newOrderResult.result.id,
-        ...preference, // Por lo visto, si está tipado, el ...spread operator solo trae las props del type definido
-      },
+      result: { ...preference.result, orderId: newOrderResult.result.id },
     };
   };
 
+// No está en la video aula:
 export const getOrdersByUserIdInteractor =
   (orderRepository: OrderRepository, paymentRepository: PaymentRepository) =>
-  async (userId: number) => {
+  async (userId: number): Promise<ResultPromiseResponse<Orders[]>> => {
     const orders = await orderRepository.getOrdersByUserId(userId);
 
     if (!orders.success) return orders;
 
-    const paymentResponse = await paymentRepository;
+    orders.result.forEach(async (order) => {
+      const paymentsResult = await paymentRepository.getPaymentFromOrderId(
+        order.id
+      );
+
+      if (!paymentsResult.success) return order;
+      const { status } = paymentsResult.result.results[0];
+
+      const state = await prisma.status.findFirst({
+        where: {
+          state: status,
+        },
+      });
+      order.statusId = state?.id ? state.id : order.statusId;
+    });
+
+    return { success: true, result: orders.result };
   };

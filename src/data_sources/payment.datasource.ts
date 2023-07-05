@@ -6,16 +6,17 @@ import prisma from '../config/db.js';
 import {
   MercadoPagoPaymentRequest,
   MercadoPagoResponse,
-  MercadoPagoPaymentResponseDto,
   MercadoPagoPaymentsResponseDto,
 } from '../core/dto/mercadopago.js';
+import { ResultPromiseResponse } from '../core/responseTypes/response.js';
+
 import PaymentRepository from '../core/repositories/payment.repository.js';
-import { MercadoPagoPayment } from 'mercadopago/resources/payment.js';
+import { ServerError } from '../errors/server_error.js';
 
 export default class PaymentDataSource implements PaymentRepository {
   public async createPreference(
     data: MercadoPagoPaymentRequest
-  ): Promise<MercadoPagoResponse> {
+  ): Promise<ResultPromiseResponse<MercadoPagoResponse>> {
     configMercadoPagoSDK();
 
     const preferenceData: CreatePreferencePayload = {
@@ -41,40 +42,51 @@ export default class PaymentDataSource implements PaymentRepository {
         data: { paymentId: preference.body.id },
       });
       return {
-        preferenceId: preference.body.id,
-        init_point: preference.body.init_point,
-        sandbox_init_point: preference.body.sandbox_init_point,
+        result: {
+          preferenceId: preference.body.id,
+          init_point: preference.body.init_point,
+          sandbox_init_point: preference.body.sandbox_init_point,
+        },
+        success: true,
       };
     } catch (error) {
       console.log('error', error);
-
+      const err = new ServerError('Error interno en servicio');
       return {
-        preferenceId: 'null',
-        init_point: 'null',
-        sandbox_init_point: 'preference.body.sandbox_init_point',
+        err,
+        success: false,
       };
     }
 
     // Retorna el objeto tipo MercadoPagoResponse:
   }
+  // No está en la videoaula:
   public async getPaymentFromOrderId(
     orderId: string
-  ): Promise<MercadoPagoPaymentResponseDto> {
+  ): Promise<ResultPromiseResponse<MercadoPagoPaymentsResponseDto>> {
     try {
-      const paymentsResult: Promise<MercadoPagoPaymentsResponseDto> = fetch(
-        `https://api.mercadopago.com/v1/payments/search?external_reference=${orderId}`,
+      const paymentsResult: any = await fetch(
+        `https://api.mercadopago.com/v1/merchant_orders/search?external_reference=${orderId}`,
         {
           method: 'GET',
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_ACCESS_TOKEN}`,
+            Authorization: `Bearer ${process.env.ACCESS_TOKEN_MP}`,
           },
         }
-      );
-      const payment = (await paymentsResult).results[0];
+      ).then((res) => res.json());
 
-      return payment;
+      /*       const payment = (await paymentsResult).results[0];
+       */
+      return {
+        result: {
+          results: paymentsResult.results,
+          paging: paymentsResult.paging,
+        },
+        success: true,
+      };
     } catch (error) {
-      return;
+      const err = new ServerError('Error interno en servicio');
+      return { err, success: false };
     }
   }
 }
