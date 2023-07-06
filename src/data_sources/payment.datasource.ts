@@ -29,7 +29,7 @@ export default class PaymentDataSource implements PaymentRepository {
       },
       back_urls: {
         pending: process.env.PENDING_BACK_URL!,
-        success: process.env.SUCCESS_BACK_URL!,
+        success: `${process.env.SUCCESS_BACK_URL!}/${data.external_reference}`, // Es el orderId que es la referencia a MP
         failure: process.env.FAILURE_BACK_URL!,
       },
     };
