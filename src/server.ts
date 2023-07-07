@@ -12,7 +12,7 @@ const port = process.env.PORT || 8000;
 
 server.use(express.json());
 server.use(cors());
-
+server.use(express.urlencoded({ extended: false }));
 server.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     message:

@@ -1,0 +1,3 @@
+- [ ] Crear el rutamiento y el service getUserById - Backend;
+- [ ] Usar la api en useAuth para usuario - FrontEnd;
+- [ ] Crear el front de Login;
