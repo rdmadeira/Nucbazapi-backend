@@ -14,6 +14,7 @@ import {
   getProductsInteractor,
   updateProductInteractor,
 } from './product.interactor.js';
+import { getOrderItemsByIdInteractor } from './orderItems.interactor.js';
 
 // Datasources:
 import CategoryDataSource from '../../data_sources/category.datasource.js';
@@ -23,9 +24,11 @@ import ProductsDataSource from '../../data_sources/products.datasource.js';
 import {
   createOrderInteractor,
   getOrdersByUserIdInteractor,
+  getOrderByIdInteractor,
 } from './orders.interactor.js';
 import OrderDataSource from '../../data_sources/order.datasource.js';
 import PaymentDataSource from '../../data_sources/payment.datasource.js';
+import OrderItemsDataSource from '../../data_sources/orderItems.datasource.js';
 
 //implementa el category repository:
 // Repositories:
@@ -35,7 +38,7 @@ const userRepository = new UserDatasource();
 const productsRepository = new ProductsDataSource();
 const orderRepository = new OrderDataSource();
 const paymentRepository = new PaymentDataSource();
-/* const productsRepository =  */
+const orderItemsRepository = new OrderItemsDataSource();
 
 //Interactors:
 const CreateCategoryInteractor = createCategoryInteractor(categoryRepository);
@@ -56,6 +59,12 @@ const GetOrdersByUserIdInteractor = getOrdersByUserIdInteractor(
   orderRepository,
   paymentRepository
 );
+const GetOrderByIdInteractor = getOrderByIdInteractor(
+  orderRepository,
+  paymentRepository
+);
+const GetOrderItemsInteractor =
+  getOrderItemsByIdInteractor(orderItemsRepository);
 
 const interactors = {
   CreateCategoryInteractor,
@@ -70,6 +79,8 @@ const interactors = {
   UpdateProductInteractor,
   CreateOrderInteractor,
   GetOrdersByUserIdInteractor,
+  GetOrderByIdInteractor,
+  GetOrderItemsInteractor,
 };
 
 export default interactors;

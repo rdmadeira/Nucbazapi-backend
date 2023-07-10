@@ -29,7 +29,7 @@ export default class PaymentDataSource implements PaymentRepository {
       },
       back_urls: {
         pending: process.env.PENDING_BACK_URL!,
-        success: `${process.env.SUCCESS_BACK_URL!}/${data.external_reference}`, // Es el orderId que es la referencia a MP
+        success: `${process.env.SUCCESS_BACK_URL!}/${data.external_reference}`, // Es el preferenceId que es la referencia a MP
         failure: process.env.FAILURE_BACK_URL!,
       },
     };
@@ -61,12 +61,15 @@ export default class PaymentDataSource implements PaymentRepository {
     // Retorna el objeto tipo MercadoPagoResponse:
   }
   // No está en la videoaula:
-  public async getPaymentFromOrderId(
-    orderId: string
-  ): Promise<ResultPromiseResponse<MercadoPagoPaymentsResponseDto>> {
+  public async getPaymentFromPreferenceId(
+    preferenceId: string
+  ): Promise<ResultPromiseResponse<MercadoPagoResponse>> {
+    console.log('preferenceId', preferenceId);
+
     try {
-      const paymentsResult: any = await fetch(
-        `https://api.mercadopago.com/v1/merchant_orders/search?external_reference=${orderId}`,
+      const createPreferenceResult: any = await fetch(
+        `https://api.mercadopago.com/checkout/preferences/${preferenceId}`,
+
         {
           method: 'GET',
           headers: {
@@ -75,17 +78,20 @@ export default class PaymentDataSource implements PaymentRepository {
         }
       ).then((res) => res.json());
 
-      /*       const payment = (await paymentsResult).results[0];
-       */
+      console.log('paymentData', createPreferenceResult);
+
       return {
         result: {
-          results: paymentsResult.results,
-          paging: paymentsResult.paging,
+          preferenceId: createPreferenceResult.id,
+          init_point: createPreferenceResult.init_point,
+          sandbox_init_point: createPreferenceResult.sandbox_init_point,
         },
         success: true,
       };
     } catch (error) {
       const err = new ServerError('Error interno en servicio');
+      console.log('error', error);
+
       return { err, success: false };
     }
   }

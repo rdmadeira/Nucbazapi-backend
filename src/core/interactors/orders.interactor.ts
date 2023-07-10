@@ -15,6 +15,7 @@ export const createOrderInteractor =
     orderData: OrderRequestDto
   ): Promise<ResultPromiseResponse<OrderResponseDto>> => {
     // acá es adonde se crea la orden
+
     const newOrderResult = await orderRepository.createOrder(orderData);
 
     if (!newOrderResult.success) {
@@ -30,6 +31,8 @@ export const createOrderInteractor =
         unit_price: item.unityPrice,
         quantity: item.quantity,
         title: item.title,
+        description: item.description,
+        picture_url: item.picture_url,
       };
       paymentItems.push(paymentItem);
     });
@@ -42,10 +45,6 @@ export const createOrderInteractor =
       },
     });
 
-    //retornamos el orderId, y el init_point
-    /* orderId: string;
-preferenceId: string;
-init_point: string; */
     if (!preference.success) return preference;
 
     return {
@@ -61,14 +60,19 @@ export const getOrdersByUserIdInteractor =
     const orders = await orderRepository.getOrdersByUserId(userId);
 
     if (!orders.success) return orders;
+    if (!orders) return { success: true, result: [] };
 
-    orders.result.forEach(async (order) => {
-      const paymentsResult = await paymentRepository.getPaymentFromOrderId(
-        order.id
+    /* orders.result.forEach(async (order) => {
+      if (!order.paymentId) return;
+
+      const paymentsData = await paymentRepository.getPaymentFromPreferenceId(
+        order.paymentId
       );
 
-      if (!paymentsResult.success) return order;
-      const { status } = paymentsResult.result.results[0];
+      if (!paymentsData.success) return order;
+      const status =
+        paymentsData.result.preferenceId
+        
 
       const state = await prisma.status.findFirst({
         where: {
@@ -76,7 +80,48 @@ export const getOrdersByUserIdInteractor =
         },
       });
       order.statusId = state?.id ? state.id : order.statusId;
-    });
+      console.log('paymentsData', paymentsData);
+    }); */
 
     return { success: true, result: orders.result };
+  };
+
+export const getOrderByIdInteractor =
+  (orderRepository: OrderRepository, paymentRepository: PaymentRepository) =>
+  async (orderId: string): Promise<ResultPromiseResponse<Orders | null>> => {
+    const order = await orderRepository.getOrderById(orderId);
+
+    if (!order.success) return { success: order.success, err: order.err };
+
+    if (!order.result) return { success: true, result: null };
+    if (!order) return { success: true, result: null };
+
+    if (!order.result.paymentId)
+      return { success: true, result: { ...order.result } };
+
+    /* const paymentsResult = await paymentRepository.getPaymentFromPreferenceId(
+      order.result.paymentId
+    );
+
+    if (!paymentsResult.success) return paymentsResult;
+
+    const status =
+      paymentsResult?.result?.results &&
+      paymentsResult?.result?.results[0].status;
+
+    const state = await prisma.status.findFirst({
+      where: {
+        state: status,
+      },
+    });
+
+    if (!state) {
+      return { success: true, result: { ...order.result } };
+    } */
+    /* order.statusId = state?.id ? state.id : order.statusId; */
+
+    return {
+      success: true,
+      result: { ...order.result /* , statusId: state.id */ },
+    };
   };

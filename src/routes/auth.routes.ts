@@ -2,8 +2,10 @@ import { Router } from 'express';
 import {
   loginController,
   signinController,
+  getUserController,
 } from '../controllers/auth.controller.js';
 import { validateRequest } from '../middlewares/validateRequest.js';
+import { verifyAuth } from '../middlewares/auth.js';
 import { body } from 'express-validator';
 
 const router = Router();
@@ -28,5 +30,9 @@ router.post(
   validateRequest,
   loginController
 );
+router.get('/:userId', verifyAuth, getUserController);
+/* router.get('/', (req, res) => {
+  res.status(200).json({ result: null });
+}); */
 
 export default router;

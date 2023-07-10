@@ -28,7 +28,7 @@ export default class OrderDataSource implements OrderRepository {
 
     // Acá está distinto del nucba-zapi-api 5 56min. El profesor no crea el shippingDetails acá, pero sí al crear el order, como nested writes. Hace eso porque usa una relación one-to-many entre orders y shippingDetails. Yo decidi usar al reves, o sea relación one-to-many entre shippingDetails y orders. Por eso lo creé acá y puse include shippingDetails: true, al crear el orden.
     const shippingDetails = await prisma.shippingDetails.upsert({
-      where: { id: findShippingDetails?.id },
+      where: { id: findShippingDetails?.id || 0 },
       update: {},
       create: {
         ...data.shippingDetails,
@@ -99,7 +99,7 @@ export default class OrderDataSource implements OrderRepository {
       return { err, success: false };
     }
   }
-  public async getOrder(
+  public async getOrderById(
     orderId: string
   ): Promise<ResultPromiseResponse<Orders | null>> {
     try {
@@ -107,6 +107,7 @@ export default class OrderDataSource implements OrderRepository {
         where: { id: orderId },
         include: { OrderItems: true },
       });
+      if (!order) return { success: true, result: null };
 
       return { result: order, success: true };
     } catch (error: any) {

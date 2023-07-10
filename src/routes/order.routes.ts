@@ -3,9 +3,11 @@ import { verifyAuth } from '../middlewares/auth.js';
 import {
   createOrder,
   getOrdersByUserIdController,
+  getOrderByIdController,
+  getOrderItemsById,
 } from '../controllers/order.controller.js';
 import { validateRequest } from '../middlewares/validateRequest.js';
-import { body, query } from 'express-validator';
+import { body, param, query } from 'express-validator';
 
 const router = Router();
 
@@ -33,11 +35,31 @@ router.post(
 
 router.get(
   '/:userId',
-  query('userId')
+  param('userId')
     .isNumeric()
     .notEmpty()
     .withMessage('userId has to be a number'),
   getOrdersByUserIdController
+);
+
+router.get(
+  '/order/:orderId',
+  /* query('orderId'), */
+  param('orderId')
+    .isString()
+    .notEmpty()
+    .withMessage('orderId has to be a string'),
+  getOrderByIdController
+);
+
+router.get(
+  '/order/:orderId/orderItems',
+  /* query('orderId'), */
+  param('orderId')
+    .isString()
+    .notEmpty()
+    .withMessage('orderId has to be a string'),
+  getOrderItemsById
 );
 
 export default router;

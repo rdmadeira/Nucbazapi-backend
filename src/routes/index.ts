@@ -10,6 +10,7 @@ router.use('/products', ProductsRoutes);
 router.use('/categories', CategoryRoutes);
 router.use('/auth', AuthRoutes);
 router.use('/orders', OrderRoutes);
+
 router.get('/', (req: Request, res: Response) => {
   res.status(200).json({
     message: 'Especificá una entidad, formato de ruta /api/v1/<entidad>',

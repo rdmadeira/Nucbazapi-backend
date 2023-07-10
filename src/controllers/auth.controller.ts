@@ -18,7 +18,6 @@ export const loginController = async (
   // const errors = validationResult(req);
   // if (!errors.isEmpty()) return next(new RequestValidatorError(errors.array())); // next function with error skips all the normal no-error middleware
 
-  console.log('body - authcontroller:26');
   const { email, password } = req.body;
   const loginResponse = await interactors.LoginAuthInteractor({
     email,
@@ -58,4 +57,24 @@ export const signinController = async (
   res
     .status(200)
     .json({ ...signInResponse, message: 'Successful Signued Up!' });
+};
+
+export const getUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const userId = req.params.userId;
+
+  const userResponse = await interactors.GetUserByIdInteractor(
+    parseInt(userId)
+  );
+
+  if (!userResponse.success) {
+    return next(userResponse.err);
+  }
+
+  return res
+    .status(200)
+    .json({ ...userResponse, message: 'User successfully fetched' });
 };

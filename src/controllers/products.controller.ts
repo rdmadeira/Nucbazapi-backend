@@ -26,8 +26,10 @@ export const productGetController = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { productId }: { productId: number } = req.body;
-  const productResponse = await interactors.GetProductInteractor(productId);
+  const { productId } = req.params;
+  const productResponse = await interactors.GetProductInteractor(
+    parseInt(productId)
+  );
 
   if (!productResponse.success) return next(productResponse.err);
 

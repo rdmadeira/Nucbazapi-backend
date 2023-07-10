@@ -12,6 +12,6 @@ export interface OrderItems {
   id?: number;
   quantity: number;
   unityPrice: number;
-  orderId?: number;
+  orderId?: string;
   productId: number;
 }

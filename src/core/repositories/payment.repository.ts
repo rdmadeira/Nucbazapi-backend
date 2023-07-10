@@ -10,7 +10,7 @@ export default interface PaymentRepository {
   createPreference(
     data: MercadoPagoPaymentRequest
   ): Promise<ResultPromiseResponse<MercadoPagoResponse>>;
-  getPaymentFromOrderId(
-    orderId: string
-  ): Promise<ResultPromiseResponse<MercadoPagoPaymentsResponseDto>>;
+  getPaymentFromPreferenceId(
+    preferenceId: string
+  ): Promise<ResultPromiseResponse<MercadoPagoResponse>>;
 }

@@ -36,15 +36,16 @@ export const verifyAuth = async (
       token,
       process.env.JWT_KEY!
     );
+
     const user = await interactors.GetUserByIdInteractor(decode.id);
 
     // Si el user es null, tiramos el error de NotAuthorizedError.
-    if (!user) {
+    if (!user.success) {
       return next(new NotAuthorizedError());
     }
 
     // 3- Si token es valido, inyectamos user al objeto request y continuamos la cadena de middlewares:
-    req.user = user; // Se inserta user en el req. Se declaró un Request agregando el user en index.d.ts en la carpeta types.
+    req.user = user.result; // Se inserta user en el req. Se declaró un Request agregando el user: UserDto | null en index.d.ts en la carpeta types.
     return next();
   } catch (error) {
     return next(new NotAuthorizedError());

@@ -11,7 +11,7 @@ import { authorizedAdmin, verifyAuth } from '../middlewares/auth.js';
 const router = Router();
 
 router
-  .get('/product', productGetController)
+  .get('/:productId', productGetController)
   .put(
     '/product',
     verifyAuth,

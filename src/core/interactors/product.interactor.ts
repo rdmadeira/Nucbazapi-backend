@@ -36,6 +36,8 @@ export const getProductsInteractor =
   async (): Promise<ResultPromiseResponse<Product[]>> => {
     const products = await productsRepository.getProducts();
 
+    if (!products.success) return products;
+
     return products;
   };
 

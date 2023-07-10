@@ -13,7 +13,7 @@ import { UserDto } from '../../core/dto/authUser.ts';
 declare global {
   namespace Express {
     interface Request {
-      user?: UserDto;
+      user: UserDto | null;
     }
   }
 }
