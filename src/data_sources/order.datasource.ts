@@ -91,6 +91,56 @@ export default class OrderDataSource implements OrderRepository {
         },
       });
 
+      const currentStatus = [];
+
+      const updatedOrders = await orders.map((order, index) => {
+        fetch(
+          `https://api.mercadopago.com/v1/payments/search?external_reference=${order.id}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'Bearer ' + process.env.ACCESS_TOKEN_MP,
+            },
+          }
+        )
+          .then((res) => res.json())
+          .then(async (dataRes) => {
+            console.log('dataRes', dataRes);
+
+            /* if (dataRes.results.length < 1) {
+              return;
+            } */
+            const statusByDataFetch = await prisma.status.findFirst({
+              where: { state: dataRes?.results[0]?.status },
+            });
+            console.log('statusByDataFetch', statusByDataFetch);
+
+            if (!statusByDataFetch) {
+              console.log('no statusByDataFetch');
+
+              return;
+            }
+
+            await prisma.orders.update({
+              where: {
+                id: order.id,
+              },
+              data: {
+                statusId: statusByDataFetch.id,
+              },
+            });
+
+            return {
+              ...order,
+              status: {
+                state: statusByDataFetch?.state,
+                id: statusByDataFetch?.id,
+              },
+            };
+          });
+      });
+      console.log('orders', orders);
+
       return { result: orders, success: true };
     } catch (error: any) {
       const err = new ServerError(
@@ -105,7 +155,7 @@ export default class OrderDataSource implements OrderRepository {
     try {
       const order = await prisma.orders.findUnique({
         where: { id: orderId },
-        include: { OrderItems: true },
+        include: { OrderItems: true, status: true },
       });
       if (!order) return { success: true, result: null };
 
