@@ -4,9 +4,10 @@
   "description": "## Proyecto de Curso On Demand - Nucba",
   "main": "server.js",
   "scripts": {
-    "start": "node ./dist/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./dist/src/server.js",
     "build": "npx tsc --build tsconfig.json",
+    "deploy": "git add . && git commit -m Heroku && git push heroku main",
+    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon --exec node --loader ts-node/esm src/server.ts"
   },
   "repository": {
