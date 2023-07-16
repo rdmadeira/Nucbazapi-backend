@@ -1,17 +1,17 @@
 export interface Orders {
-  id: number;
+  id: string;
   createdAt: Date;
   updatedAt: Date;
-  paymentId: string;
-  merchanOrderId: string;
+  paymentId: string | null;
+  merchanOrderId: string | null;
   userId: number;
   statusId: number;
 }
 
 export interface OrderItems {
-  id: number;
+  id?: number;
   quantity: number;
   unityPrice: number;
-  orderId: number;
+  orderId?: string;
   productId: number;
 }

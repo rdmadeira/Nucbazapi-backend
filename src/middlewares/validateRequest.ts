@@ -11,4 +11,6 @@ export const validateRequest = (
   if (!errors.isEmpty()) {
     return next(new RequestValidatorError(errors.array()));
   }
+  // Si no retorna el next, no pasa al authloginController
+  return next();
 };

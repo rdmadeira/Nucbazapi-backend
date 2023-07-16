@@ -7,9 +7,7 @@ import jwt from 'jsonwebtoken'; // crea tokens momentaneos
 import bcrypt from 'bcryptjs'; // hace el hash (encrypta) de un password
 
 import prisma from '../config/db.js';
-import crypto from 'crypto'; // modulo interno de node
-import { resolve } from 'path';
-import { NotFoundError } from '../errors/not_found_error.js';
+
 import { BadRequestError } from '../errors/bad_request_error.js';
 import { ServerError } from '../errors/server_error.js';
 import { UserExistsError } from '../errors/user_exists.js';
@@ -26,7 +24,8 @@ export default class AuthDataSource implements AuthRepository {
         },
       });
 
-      if (!user) return { success: false, err: new NotFoundError() };
+      if (!user)
+        return { success: false, err: new BadRequestError('User not found!') };
 
       const isMatch = await this.matchPw(user, loginData.password);
 
