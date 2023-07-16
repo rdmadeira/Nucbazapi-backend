@@ -33,7 +33,9 @@
     "rootDirs": [
       "./src",
       "./prisma"
-    ] /* Allow multiple folders to be treated as one when resolving modules. */,
+    ] /* Allow multiple folders to be treated as one when resolving modules. 
+    Acá tuve que incluir a prisma folder porque tengo el seed adentro de prisma y no de src!! 
+    */,
     "typeRoots": [
       "src/@types",
       "./node_modules/@types"
@@ -61,7 +63,9 @@
     // "sourceMap": true,                                /* Create source map files for emitted JavaScript files. */
     // "inlineSourceMap": true,                          /* Include sourcemap files inside the emitted JavaScript. */
     // "outFile": "./",                                  /* Specify a file that bundles all outputs into one JavaScript file. If 'declaration' is true, also designates a file that bundles all .d.ts output. */
-    // "outDir": "./",                                   /* Specify an output folder for all emitted files. */
+    "outDir": "./dist" /* Specify an output folder for all emitted files. 
+    Tuve que cambiar el outDir a dist porque si no me genera todos los archivos en javascript en las carpetas especificadas
+    */,
     // "removeComments": true,                           /* Disable emitting comments. */
     // "noEmit": true,                                   /* Disable emitting files from a compilation. */
     // "importHelpers": true,                            /* Allow importing helper functions from tslib once per project, instead of including them per-file. */
