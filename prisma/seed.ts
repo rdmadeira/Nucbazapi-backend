@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export async function seed() {
-  await prisma.status.createMany({
+  /* await prisma.status.createMany({
     data: [
       // estados existentes en Mercadopago:
       { state: 'active' },
@@ -45,17 +45,19 @@ export async function seed() {
         imgTag: 'img/tag_sambu.jpeg',
       },
     ],
-  });
-
-  // Borra todas las lineas de la tabla Category
-  /* await prisma.$queryRaw`TRUNCATE TABLE "public"."Products" CASCADE;`; */
-  await prisma.products.createMany({
+  }); */
+  /**
+ *********************** Borra todas las lineas de la table Products ***********************
+  await prisma.$queryRaw`TRUNCATE TABLE "public"."Products" CASCADE;`;
+  ******************************************************************************************
+  */
+  /* await prisma.products.createMany({
     data: [
       {
         id: 1,
         name: 'Pizza Tranca',
         imgUrl: '/img/pizza1.jpg',
-        categoryId: 1,
+        categoryId: 2,
         description:
           'Pizza casera a la piedra, muzzarella, jamón, morrón asado, huevo.',
         price: 100,
@@ -64,7 +66,7 @@ export async function seed() {
         id: 2,
         name: 'Pizza Mix',
         imgUrl: '/img/pizza2.jpg',
-        categoryId: 1,
+        categoryId: 2,
         description:
           'Pizza casera a la piedra, muzzarella, jamón, morrón asado, huevo.',
         price: 100,
@@ -73,7 +75,7 @@ export async function seed() {
         id: 3,
         name: 'Vatapa Bomba',
         imgUrl: '/img/vatapa1.jpg',
-        categoryId: 2,
+        categoryId: 1,
         description:
           'Se elabora con pan o harina, jengibre, pimenta-malagueta, castaña de caju, leche de coco, azeite-de-dendê y cebolla.',
         price: 1000,
@@ -82,7 +84,7 @@ export async function seed() {
         id: 4,
         name: 'Caruru Verdão',
         imgUrl: '/img/caruru1.jpg',
-        categoryId: 2,
+        categoryId: 1,
         description:
           'Se prepara con quiabo, una verdura que se cree procede de África, cebolla, camarones frescos y secos, aceite de palma (azeite de dendê), castanha-de-caju tostados y molidos y cacahuetes tostados sin cáscara y molidos.',
         price: 1000,
@@ -91,7 +93,7 @@ export async function seed() {
         id: 5,
         name: 'Acará du Bom',
         imgUrl: '/img/acaraje1.jpg',
-        categoryId: 2,
+        categoryId: 1,
         description:
           'Bollo elaborado con una masa de feijão fradinho y camarones, frito en aceite de dende.',
         price: 800,
@@ -142,9 +144,9 @@ export async function seed() {
         price: 100,
       },
     ],
-  });
+  }); */
 }
 
 seed()
-  .then((res) => console.log('res', res))
+  .then((res) => console.log('Seed ejecutado con suceso'))
   .catch((err) => console.log('err', err));
