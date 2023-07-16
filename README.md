@@ -45,6 +45,8 @@ Por no estar muy acoplado, si cambias algo adentro del negocio, no hay que cambi
 ### Usuarios de prueba:
 
 ```javascript
+
+
 Tener en cuenta que estes usuarios de prueba son momentaneos y si no usados por 60 dias corridos, seran eliminados.
 
 // Vendedor:
@@ -64,3 +66,20 @@ Tener en cuenta que estes usuarios de prueba son momentaneos y si no usados por 
 
 }
 ```
+
+- [x] Instalar Heroku CLI; - ok
+- [x] Login en Heroku; - ok
+- [x] Sicronizar el prisma local con el postgre de Heroku, o sea enviar los Schemas, hacer el seed. No se pudo usar el "prisma migrate", y sí "prisma db push --preview-feature" - ok - ```javascript
+
+  ```
+  npx prisma db push --preview-feature
+
+  npx prisma seed db
+  ```
+
+  [X] Hacer el build de Typescript; - ok
+
+- [x] Modificar el entrypoint de la app; dist/src/server.js - ok
+- [x] Agregar los script "start", ""build", "deploy"; - ok
+- [x] Tener en cuenta los rootDirs y outDir para el build; - ok
+- [x] Crear el archivo Procfile (Heroku) en el root del proyecto; - ok (web: node dist/src/server.js); - ok
