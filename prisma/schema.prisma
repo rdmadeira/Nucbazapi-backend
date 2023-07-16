@@ -1,28 +1,18 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
-
-// Users
-// enum en prisma está bueno para usar como role de usuario (admin y user). Pero decidimos
-// usar una tabla Role a parte, porque la documentación de prisma atenta que la base de datos 
-// tiene que suportar eenum, por ejemplo mySQL no suporta, y si queremos cambiar la base de datos,
-// no es interesante tener algo que no es suportado por otras implementaciones.
 
 model Role {
   id   Int    @id @default(autoincrement())
   role String @unique
-  User User[] // Relacion one to many con 1 role para muchos usuarios
+  User User[]
 }
-
-// Cada cambio en la base de datos, se tiene que hacer un nuevo migrate de prisma
 
 model User {
   id        Int      @id @default(autoincrement())
@@ -31,39 +21,36 @@ model User {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  roleId    Int      @default(2)
   Orders    Orders[]
   role      Role     @relation(fields: [roleId], references: [id])
-  roleId    Int      @default(2)
 }
 
-// Category
 model Category {
   id        Int        @id @default(autoincrement())
   category  String
-  imgTag    String?
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  imgTag    String?
   products  Products[]
 }
 
-// Products
 model Products {
   id          Int          @id @default(autoincrement())
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  name        String
   price       Float
   imgUrl      String
-  description String
-  category    Category     @relation(fields: [categoryId], references: [id])
   categoryId  Int
+  description String
+  name        String
   OrderItems  OrderItems[]
+  category    Category     @relation(fields: [categoryId], references: [id])
 }
 
-// Orders
 model Status {
   id     Int      @id @default(autoincrement())
-  state  String   @unique @default("pending") // pendiente, en proceso, finalizado...
+  state  String   @unique @default("pending")
   Orders Orders[]
 }
 
@@ -76,28 +63,28 @@ model ShippingDetails {
 
 model Orders {
   id                String          @id @default(uuid())
-  user              User            @relation(fields: [userId], references: [id])
-  status            Status          @relation(fields: [statusId], references: [id])
   createdAt         DateTime        @default(now())
   updatedAt         DateTime        @updatedAt
+  paymentId         String?
+  merchanOrderId    String?
+  userId            Int
+  statusId          Int
   ShippingPrice     Float
   subTotal          Float
   total             Float
-  paymentId         String? // Datos de Mercado libre
-  merchanOrderId    String? // Datos de Mercado libre
-  shippingDetails   ShippingDetails @relation(fields: [shippingDetailsId], references: [id])
-  userId            Int
-  statusId          Int
-  OrderItems        OrderItems[]
   shippingDetailsId Int
+  OrderItems        OrderItems[]
+  shippingDetails   ShippingDetails @relation(fields: [shippingDetailsId], references: [id])
+  status            Status          @relation(fields: [statusId], references: [id])
+  user              User            @relation(fields: [userId], references: [id])
 }
 
 model OrderItems {
   id         Int      @id @default(autoincrement())
   quantity   Int
-  unityPrice Float // El precio desacoplamos y desrelacionamos al precio del producto, porque al actualizar los precios, no afecte el precio del orden en el momento del pedido. 
-  product    Products @relation(fields: [productId], references: [id])
-  order      Orders   @relation(fields: [orderId], references: [id])
+  unityPrice Float
   orderId    String
   productId  Int
+  order      Orders   @relation(fields: [orderId], references: [id])
+  product    Products @relation(fields: [productId], references: [id])
 }

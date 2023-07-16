@@ -13,7 +13,7 @@ export async function seed() {
       { state: 'rejected' },
     ],
   });
-  /* await prisma.role.createMany({
+  await prisma.role.createMany({
     data: [
       {
         role: 'admin',
@@ -22,8 +22,8 @@ export async function seed() {
         role: 'user',
       },
     ],
-  }); */
-  /* await prisma.category.createMany({
+  });
+  await prisma.category.createMany({
     data: [
       {
         category: 'Bahiana',
@@ -45,11 +45,11 @@ export async function seed() {
         imgTag: 'img/tag_sambu.jpeg',
       },
     ],
-  }); */
+  });
 
   // Borra todas las lineas de la tabla Category
   /* await prisma.$queryRaw`TRUNCATE TABLE "public"."Products" CASCADE;`; */
-  /* await prisma.products.createMany({
+  await prisma.products.createMany({
     data: [
       {
         id: 1,
@@ -141,8 +141,8 @@ export async function seed() {
           'Hamburguesa de asado de 220g, mostaza dulce, bacon, cebolla caramelizada, 3 cheddars, aros de cebolla, papas fritas.',
         price: 100,
       },
-    ], 
-  }); */
+    ],
+  });
 }
 
 seed()
