@@ -41,6 +41,7 @@ export default class PaymentDataSource implements PaymentRepository {
         where: { id: data.external_reference },
         data: { paymentId: preference.body.id },
       });
+
       return {
         result: {
           preferenceId: preference.body.id,

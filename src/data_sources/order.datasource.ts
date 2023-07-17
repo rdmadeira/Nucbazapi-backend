@@ -1,10 +1,14 @@
-import { OrderRequestDto } from '../core/dto/orderDto.js';
+import {
+  OrderRequestDto,
+  OrderUpdateRequestDto,
+} from '../core/dto/orderDto.js';
 import { Orders } from '../core/entities/orders.js';
 import OrderRepository from '../core/repositories/order.repository.js';
 import { ResultPromiseResponse } from '../core/responseTypes/response.js';
 import prisma from '../config/db.js';
 import { ServerError } from '../errors/server_error.js';
 import { OrderItems } from '../core/entities/orders.js';
+import { MercadoPagoPaymentResponseDto } from '../core/dto/mercadopago.js';
 
 export default class OrderDataSource implements OrderRepository {
   public async createOrder(
@@ -165,6 +169,48 @@ export default class OrderDataSource implements OrderRepository {
         error.message || 'Error interno en el Servidor'
       );
       return { err, success: false };
+    }
+  }
+  public async updateOrderByOrderPayload(
+    orderPayload: OrderUpdateRequestDto
+  ): Promise<ResultPromiseResponse<MercadoPagoPaymentResponseDto>> {
+    try {
+      const status = await prisma.status.findUnique({
+        where: {
+          state: orderPayload.status,
+        },
+      });
+
+      await prisma.orders.update({
+        where: {
+          id: orderPayload.id,
+        },
+        data: {
+          paymentId: orderPayload.paymentId,
+          merchanOrderId: orderPayload.merchanOrderId,
+          statusId: status?.id,
+        },
+        include: {
+          OrderItems: true,
+          status: true,
+        },
+      });
+
+      return {
+        result: {
+          merchant_order_id: orderPayload.merchanOrderId || undefined,
+          payment_id: orderPayload.paymentId || undefined,
+          external_reference: orderPayload.id,
+        },
+        success: true,
+      };
+    } catch (error) {
+      const err = new ServerError('Error interno en el Servidor');
+
+      return {
+        err,
+        success: false,
+      };
     }
   }
 }

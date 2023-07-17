@@ -59,5 +59,29 @@ export const getOrderItemsById = async (
 
   if (!orderItems.success) return next(orderItems.err);
 
-  return res.json({ ...orderItems, message: 'Succesfully get Order Items' });
+  return res
+    .status(200)
+    .json({ ...orderItems, message: 'Succesfully get Order Items' });
+};
+
+export const putOrderUpdateController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { merchant_order_id, payment_id, status, orderId } = req.body;
+
+  const updatedData = await interactors.UpdateOrderByOrderPayload({
+    merchanOrderId: merchant_order_id,
+    paymentId: payment_id,
+    status,
+    id: orderId,
+  });
+
+  if (!updatedData.success) return next(updatedData.err);
+
+  return res.status(200).json({
+    message: 'Succesfully updated Order!',
+    ...updatedData,
+  });
 };

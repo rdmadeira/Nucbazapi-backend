@@ -1,5 +1,13 @@
-import { OrderRequestDto, OrderResponseDto } from '../dto/orderDto.js';
-import { Currencies, PaymentItem } from '../dto/mercadopago.js';
+import {
+  OrderRequestDto,
+  OrderResponseDto,
+  OrderUpdateRequestDto,
+} from '../dto/orderDto.js';
+import {
+  Currencies,
+  PaymentItem,
+  MercadoPagoPaymentResponseDto,
+} from '../dto/mercadopago.js';
 import OrderRepository from '../repositories/order.repository.js';
 import PaymentRepository from '../repositories/payment.repository.js';
 import { ResultPromiseResponse } from '../responseTypes/response.js';
@@ -123,5 +131,22 @@ export const getOrderByIdInteractor =
     return {
       success: true,
       result: { ...order.result /* , statusId: state.id */ },
+    };
+  };
+
+export const updateOrderByOrderPayload =
+  (orderRepository: OrderRepository) =>
+  async (
+    orderPayload: OrderUpdateRequestDto
+  ): Promise<ResultPromiseResponse<MercadoPagoPaymentResponseDto>> => {
+    const updatedOrderData = await orderRepository.updateOrderByOrderPayload(
+      orderPayload
+    );
+
+    if (!updatedOrderData.success) return updatedOrderData;
+
+    return {
+      success: true,
+      result: updatedOrderData.result,
     };
   };
