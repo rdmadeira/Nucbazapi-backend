@@ -26,7 +26,8 @@ export interface MercadoPagoPaymentRequest {
 }
 
 export interface MercadoPagoPaymentResponseDto {
-  id?: number;
+  payment_id?: string;
+  merchant_order_id?: string;
   date_created?: string;
   date_approved?: string;
   date_last_updated?: string;
@@ -35,9 +36,10 @@ export interface MercadoPagoPaymentResponseDto {
   payment_method_id?: string;
   payment_type_id?: string;
   status?: string;
-  status_detail: string;
+  status_detail?: string;
   currency_id?: string;
   description?: string;
+  external_reference?: string;
 }
 
 export interface MercadoPagoPaymentsResponseDto {

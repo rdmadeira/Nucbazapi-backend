@@ -24,3 +24,10 @@ export interface OrderResponseDto {
   preferenceId: string;
   init_point: string;
 }
+
+export interface OrderUpdateRequestDto {
+  id: string;
+  paymentId: string | null;
+  merchanOrderId: string | null;
+  status: string;
+}
