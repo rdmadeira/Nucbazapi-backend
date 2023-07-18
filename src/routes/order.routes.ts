@@ -64,17 +64,13 @@ router.get(
 );
 
 router.put(
-  '/',
+  '/:orderId',
   body('orderId').isString().notEmpty().withMessage('orderId is required'),
   body('merchant_order_id')
     .isString()
     .withMessage('merchant_order_id has to be a string'),
   body('payment_id').isString().withMessage('payment_id has to be a string'),
-  body('status')
-    .isString()
-
-    .withMessage('status has to be a string'),
-
+  body('status').isString().withMessage('status has to be a string'),
   validateRequest,
   verifyAuth,
   putOrderUpdateController

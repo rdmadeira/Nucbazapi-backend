@@ -28,9 +28,9 @@ export default class PaymentDataSource implements PaymentRepository {
         cost: data.shipments?.cost,
       },
       back_urls: {
-        pending: process.env.PENDING_BACK_URL!,
+        pending: `${process.env.PENDING_BACK_URL!}/${data.external_reference}`,
         success: `${process.env.SUCCESS_BACK_URL!}/${data.external_reference}`, // Es el preferenceId que es la referencia a MP
-        failure: process.env.FAILURE_BACK_URL!,
+        failure: `${process.env.PENDING_BACK_URL!}/${data.external_reference}`,
       },
     };
 
